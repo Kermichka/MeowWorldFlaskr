@@ -1,0 +1,170 @@
+{% extends 'base.html' %}
+{% block additional_styles%}
+<style>
+    .first-image-container {
+        background-image: url("{{ url_for('static', filename='shop/images/catEating.png') }}");
+        background-size: cover;
+        /* Adjust as needed */
+        background-repeat: no-repeat;
+        /* Adjust as needed */
+        background-position: center;
+        height: 600px;
+        width: 100%;
+    }
+</style>
+{% endblock%}
+{% block image %}
+<div class="first-image-container">
+    {% endblock %}
+    {% block header %}
+    <h1>{% block title %}Shop{% endblock %}</h1>
+    {% endblock %}
+    {% block additional_links %}
+    <li><a href="{{ url_for('shop.cart') }}">CART</a></li>
+    {% endblock %}
+    {% block content %}
+    <div class="modal fade" id="productModal" tabindex="-1" role="dialog" aria-labelledby="productModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="productModalLabel">Product Selection</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>How many products do you want?</p>
+                    <p id="productNameModal"></p>
+                    <p id="productPriceModal" class="set-price-right"></p>
+                    <input type="number" id="productCount" class="form-control">
+                    <p id="total" class="set-price-right"></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="saveProductsBtn">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row text-rows">
+            <p>Welcome to MeowWorld's Cat Food Shop! We offer a premium selection of high-quality cat
+                food products to keep your feline companions happy and healthy. From wet food to dry kibble,
+                we have the perfect options to satisfy even the pickiest eaters. Shop with confidence knowing
+                that each product is carefully curated to meet your cat's nutritional needs. Discover the best
+                for your furry friends at MeowWorld's Cat Food Shop.</p>
+        </div>
+        <div class="row">
+            {% for product in products %}
+            <div class="col-4">
+                <div class="products" data-bs-toggle="modal" data-bs-target="#productModal">
+                    <img class="product-image" src="{{ url_for('static', filename=product['image_path']) }}">
+                    <p class="product-name" id="productName">{{ product['name'] }}</p>
+                    <p class="product-price set-price-right" id="productPrice">{{ product['price'] }}</p>
+                </div>
+            </div>
+            {% if loop.index % 3 == 0 %}
+        </div>
+        <div class="row">
+            {% endif %}
+            {% endfor %}
+        </div>
+
+    </div>
+
+    {% endblock %}
+    {% block scripts %}
+    <script>
+
+        const productsData = [];
+
+        function checkFetchStatus(response) {
+            if (!response.ok) {
+                throw new Error(`Fetch failed with status: ${response.status}`);
+            }
+            return response.json();
+        }
+
+        Promise.all([
+            fetch('/api/products').then(checkFetchStatus),
+        ])
+            .then(([products, cartItems]) => {
+                productsData.push(...products);
+                console.log(productsData)
+            })
+            .catch(error => {
+                console.error('Error fetching data:', error);
+            });
+
+        const priceFormatter = Intl.NumberFormat("en-us", {
+            style: "currency",
+            currency: "usd",
+        });
+
+        const saveProductsBtn = document.getElementById("saveProductsBtn");
+        const productCountInput = document.getElementById("productCount");
+        let clickedBox = null;
+        const productBoxes = document.querySelectorAll(".products");
+
+        productCountInput.addEventListener("input", function () {
+            const enteredValue = parseInt(this.value);
+            if (isNaN(enteredValue) || enteredValue <= 0) {
+                this.value = "0";
+            }
+            const productName = document.getElementById("productNameModal").textContent;
+            document.getElementById("total").textContent = getTotal(productName)
+
+        });
+
+        productBoxes.forEach((productBox) => {
+
+            const productPriceElement = productBox.querySelector(".product-price");
+            const productPrice = parseInt(productPriceElement.textContent);
+            productPriceElement.textContent = priceFormatter.format(productPrice / 100);
+            productBox.addEventListener("click", function () {
+                const productId = productBox.querySelector(".product-name").textContent;
+                const productData = productsData.find(product => product.name === productId);
+
+                document.getElementById("productNameModal").textContent = productData.name;
+                document.getElementById("productPriceModal").textContent = priceFormatter.format(productData.price / 100);
+                document.getElementById("total").textContent = getTotal(productId)
+            });
+        });
+        saveProductsBtn.addEventListener("click", function () {
+            if (document.cookie.split(";").some((item) => item.trim().startsWith("session="))) {
+
+                const productName = document.getElementById("productNameModal").textContent;
+                const productQuantity = parseInt(document.getElementById("productCount").value);
+
+                const requestData = {
+                    product_name: productName,
+                    product_quantity: productQuantity,
+                };
+
+                fetch("/add_to_cart", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(requestData),
+                })
+                    .then(response => {
+                        if (response.ok) {
+                            window.location.reload();
+                        } else {
+                            alert("Failed to add product to cart.");
+                        }
+                    });
+
+            }
+            else {
+                alert("Please, log in!");
+            }
+        });
+        function getTotal(productName) {
+            let total = 0;
+            const product = productsData.find(p => p.name === productName);
+            total = priceFormatter.format(((productCountInput.value) * product.price) / 100)
+            return total;
+        }
+    </script>
+    {% endblock %}

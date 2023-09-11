@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block additional_styles%}
+<style>
+.first-image-container {
+        background-image: url("{{ url_for('static', filename='auth/images/cat.jpeg') }}");
+        background-size: cover; /* Adjust as needed */
+        background-repeat: no-repeat; /* Adjust as needed */
+        background-position: center;
+        height: 600px;
+        width:100%;
+    }
+</style>
+{% endblock%}
+{% block image %}
+<div class="first-image-container">
+{% endblock %}
+{% block header %}
+  <h1>{% block title %}Register{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+  <form method="post">
+    <label for="username">Username</label>
+    <input name="username" id="username" required>
+    <label for="password">Password</label>
+    <input type="password" name="password" id="password" required>
+    <input type="submit" value="Register">
+  </form>
+{% endblock %}
