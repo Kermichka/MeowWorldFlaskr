@@ -60,10 +60,6 @@ def get_cart_items_api():
 @bp.route('/add_to_cart', methods=['POST'])
 @login_required
 def add_to_cart():
-
-    if request.method != 'POST':
-        return jsonify({"message": "Failed to add product to cart"}), 400
-    
     data = request.get_json()
     print(data)
     product_name = data.get('product_name')
@@ -105,7 +101,6 @@ def add_to_cart():
 @bp.route('/update_cart', methods=('POST',))
 @login_required
 def update_cart():
-    if request.method == 'POST':
         data = request.get_json()
 
         product_name = data.get('product_name')
@@ -154,12 +149,9 @@ def update_cart():
 
         return jsonify({"message": "Failed to update cart"}), 400
 
-    return jsonify({"message": "Failed to update cart"}), 400
-
 @bp.route('/remove_cart_item', methods=('POST',))
 @login_required
 def remove_cart_item():
-    if request.method == 'POST':
         data = request.get_json()
 
         product_name = data.get('product_name')
@@ -184,8 +176,6 @@ def remove_cart_item():
                 )
                 db.commit()
                 return jsonify({"message": "Item removed from cart_items successfully"})
-
-    return jsonify({"message": "Failed to remove item from cart_items"}), 400
 
 
 @bp.route('/cart', methods=('GET', 'POST'))
