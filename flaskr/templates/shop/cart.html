@@ -4,9 +4,7 @@
     .first-image-container {
         background-image: url("{{ url_for('static', filename='cart/images/cart.jpg') }}");
         background-size: cover;
-        /* Adjust as needed */
         background-repeat: no-repeat;
-        /* Adjust as needed */
         background-position: top;
         height: 600px;
         width: 100%;
@@ -23,13 +21,17 @@
     <li><a href="{{ url_for('shop.cart') }}">CART</a></li>
     {% endblock %}
     {% block content %}
+    <br>
     <div id="cart-container">
         <p id="loading-message">Loading...</p>
     </div>
     <br>
-    <p class="set-price-right" id="total">Total:</p>
-    <form method="post" action="{{ url_for('shop.checkout') }}">
-        <button type="submit" class="btn btn-primary">Checkout</button>
+    <div id="total-container">
+        <p style="border-top: thin solid #ccc; padding-top: 5px;">Estimated Total</p>
+        <p class="set-price-right" id="total"></p>
+    </div>
+        <form method="post" action="{{ url_for('shop.order') }}">
+        <button type="submit" class="btn btn-primary">Order</button>
     </form>
     {% endblock %}
     {% block scripts %}
@@ -53,7 +55,9 @@
                 cartItemsData.push(...cartItems);
                 console.log(productsData);
                 console.log(cartItemsData);
-                populateCartItems();
+                setTimeout(() => {
+                    populateCartItems();
+                }, 2000);
             })
             .catch(error => {
                 console.error('Error fetching data:', error);
@@ -82,7 +86,7 @@
             quantity.classList.add("set-price-right");
 
             const total = document.createElement("p");
-            total.textContent = "Total: " + updateProductTotal(cartItem['product_name']);
+            total.textContent = updateProductTotal(cartItem['product_name']);
             total.classList.add("set-price-right");
 
             const buttonDiv = document.createElement("div");
@@ -115,7 +119,8 @@
 
             cartContainer.appendChild(cartItemDiv);
         }
-
+        const totalContainer = document.getElementById("total-container")
+        totalContainer.style.display = "none";
         function populateCartItems() {
             const cartContainer = document.getElementById("cart-container");
             const loadingMessage = document.getElementById("loading-message");
@@ -124,7 +129,7 @@
             if (productsData.length > 0 && cartItemsData.length > 0) {
                 loadingMessage.style.display = "none"; // Hide loading message
                 totalElement.style.display = "block"; // Show total element
-
+                totalContainer.style.display = "inline";
                 for (const cartItem of cartItemsData) {
                     addCartItemToDOM(cartItem);
                 }
@@ -163,7 +168,7 @@
                                 alert("Failed to add product to cart.");
                             }
                         });
-                        updateTotal();
+                    updateTotal();
                 });
                 buttonDiv.appendChild(addButton)
                 cartContainer.appendChild(cartEmptyMessage);
@@ -237,7 +242,7 @@
                 total += cartItem.product_quantity * productData.price / 100;
             }
             const totalElement = document.getElementById("total");
-            totalElement.textContent = "Cart total: " + priceFormatter.format(total);
+            totalElement.textContent = priceFormatter.format(total);
         }
 
         updateTotal();

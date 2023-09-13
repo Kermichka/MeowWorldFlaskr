@@ -17,7 +17,7 @@
 <div class="first-image-container">
     {% endblock %}
     {% block header %}
-    <h1>{% block title %}Shop{% endblock %}</h1>
+    <h1 style="text-align: center;">{% block title %}Shop{% endblock %}</h1>
     {% endblock %}
     {% block additional_links %}
     <li><a href="{{ url_for('shop.cart') }}">CART</a></li>
@@ -68,6 +68,7 @@
             {% endif %}
             {% endfor %}
         </div>
+        <br>
 
     </div>
 
@@ -129,37 +130,82 @@
                 document.getElementById("total").textContent = getTotal(productId)
             });
         });
+
+        function updateCartItem(requestData) {
+
+            fetch("/update_cart", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(requestData),
+            })
+                .then(response => {
+                    if (response.ok) {
+                        window.location.reload();
+                    } else {
+                        alert("Failed to update cart.");
+                    }
+                });
+        }
+
+        function addToCart(requestData) {
+            fetch("/add_to_cart", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(requestData),
+            })
+                .then(response => {
+                    if (response.ok) {
+                        window.location.reload();
+                    } else {
+                        alert("Failed to add product to cart.");
+                    }
+                });
+        }
+
         saveProductsBtn.addEventListener("click", function () {
             if (document.cookie.split(";").some((item) => item.trim().startsWith("session="))) {
 
                 const productName = document.getElementById("productNameModal").textContent;
                 const productQuantity = parseInt(document.getElementById("productCount").value);
 
-                const requestData = {
-                    product_name: productName,
-                    product_quantity: productQuantity,
-                };
 
-                fetch("/add_to_cart", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify(requestData),
-                })
-                    .then(response => {
-                        if (response.ok) {
-                            window.location.reload();
+
+                fetch("/api/cart_items")
+                    .then(checkFetchStatus)
+                    .then(cartItems => {
+                        // Check if the product is already in the cart
+                        const cartItem = cartItems.find(item => item.product_name === productName);
+
+                        if (cartItem) {
+                            const newQuantity = cartItem.product_quantity + productQuantity;
+                            const requestData = {
+                                product_name: productName,
+                                new_quantity: newQuantity,
+                            };
+
+                            updateCartItem(requestData);
                         } else {
-                            alert("Failed to add product to cart.");
-                        }
-                    });
+                            const requestData = {
+                                product_name: productName,
+                                product_quantity: productQuantity,
+                            };
 
+                            addToCart(requestData);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error fetching cart items:', error);
+                    });
             }
             else {
                 alert("Please, log in!");
             }
         });
+
         function getTotal(productName) {
             let total = 0;
             const product = productsData.find(p => p.name === productName);

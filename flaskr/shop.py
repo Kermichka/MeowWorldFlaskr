@@ -229,9 +229,9 @@ def cart():
 
     return render_template('shop/cart.html', cartItems=[], products=[])
 
-@bp.route('/checkout', methods=['POST'])
+@bp.route('/order', methods=['POST'])
 @login_required
-def checkout():
+def order():
     db = get_db()
     user_id = g.user['id']
 
