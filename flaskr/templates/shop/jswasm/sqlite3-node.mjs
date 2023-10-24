@@ -35,7 +35,7 @@ const require = createRequire(import.meta.url);
 
 var sqlite3InitModule = (() => {
   var _scriptDir = import.meta.url;
-  
+
   return (
 function(config) {
   var sqlite3InitModule = config || {};
@@ -97,7 +97,7 @@ Module[xNameOfInstantiateWasm] = function callee(imports,onSuccess){
           return WebAssembly.instantiateStreaming(wfetch(), imports)
             .then((arg)=>onSuccess(arg.instance, arg.module));
         }
-        : async ()=>{ 
+        : async ()=>{
           return wfetch()
             .then(response => response.arrayBuffer())
             .then(bytes => WebAssembly.instantiate(bytes, imports))
@@ -161,30 +161,30 @@ function logExceptionOnExit(e) {
 }
 
 if (ENVIRONMENT_IS_NODE) {
-  
-  
-  
-  
-  
-  
+
+
+
+
+
+
   var fs = require('fs');
   var nodePath = require('path');
 
   if (ENVIRONMENT_IS_WORKER) {
     scriptDirectory = nodePath.dirname(scriptDirectory) + '/';
   } else {
-    
-    
-    
-    scriptDirectory = require('url').fileURLToPath(new URL('./', import.meta.url)); 
+
+
+
+    scriptDirectory = require('url').fileURLToPath(new URL('./', import.meta.url));
   }
 
 
 
 
 read_ = (filename, binary) => {
-  
-  
+
+
   filename = isFileURI(filename) ? new URL(filename) : nodePath.normalize(filename);
   return fs.readFileSync(filename, binary ? undefined : 'utf8');
 };
@@ -198,7 +198,7 @@ readBinary = (filename) => {
 };
 
 readAsync = (filename, onload, onerror) => {
-  
+
   filename = isFileURI(filename) ? new URL(filename) : nodePath.normalize(filename);
   fs.readFile(filename, function(err, data) {
     if (err) onerror(err);
@@ -213,20 +213,20 @@ readAsync = (filename, onload, onerror) => {
 
   arguments_ = process['argv'].slice(2);
 
-  
+
 
   process['on']('uncaughtException', function(ex) {
-    
+
     if (!(ex instanceof ExitStatus)) {
       throw ex;
     }
   });
 
-  
-  
-  
-  
-  
+
+
+
+
+
   process['on']('unhandledRejection', function(reason) { throw reason; });
 
   quit_ = (status, toThrow) => {
@@ -344,9 +344,9 @@ var EXITSTATUS;
 
 function assert(condition, text) {
   if (!condition) {
-    
-    
-    
+
+
+
     abort(text);
   }
 }
@@ -363,24 +363,24 @@ var UTF8Decoder = typeof TextDecoder != 'undefined' ? new TextDecoder('utf8') : 
 function UTF8ArrayToString(heapOrArray, idx, maxBytesToRead) {
   var endIdx = idx + maxBytesToRead;
   var endPtr = idx;
-  
-  
-  
-  
-  
+
+
+
+
+
   while (heapOrArray[endPtr] && !(endPtr >= endIdx)) ++endPtr;
 
   if (endPtr - idx > 16 && heapOrArray.buffer && UTF8Decoder) {
     return UTF8Decoder.decode(heapOrArray.subarray(idx, endPtr));
   }
   var str = '';
-  
-  
+
+
   while (idx < endPtr) {
-    
-    
-    
-    
+
+
+
+
     var u0 = heapOrArray[idx++];
     if (!(u0 & 0x80)) { str += String.fromCharCode(u0); continue; }
     var u1 = heapOrArray[idx++] & 63;
@@ -409,22 +409,22 @@ function UTF8ToString(ptr, maxBytesToRead) {
 
 
 function stringToUTF8Array(str, heap, outIdx, maxBytesToWrite) {
-  
-  
+
+
   if (!(maxBytesToWrite > 0))
     return 0;
 
   var startIdx = outIdx;
-  var endIdx = outIdx + maxBytesToWrite - 1; 
+  var endIdx = outIdx + maxBytesToWrite - 1;
   for (var i = 0; i < str.length; ++i) {
-    
-    
-    
-    
-    
-    
-    
-    var u = str.charCodeAt(i); 
+
+
+
+
+
+
+
+    var u = str.charCodeAt(i);
     if (u >= 0xD800 && u <= 0xDFFF) {
       var u1 = str.charCodeAt(++i);
       u = 0x10000 + ((u & 0x3FF) << 10) | (u1 & 0x3FF);
@@ -449,7 +449,7 @@ function stringToUTF8Array(str, heap, outIdx, maxBytesToWrite) {
       heap[outIdx++] = 0x80 | (u & 63);
     }
   }
-  
+
   heap[outIdx] = 0;
   return outIdx - startIdx;
 }
@@ -463,11 +463,11 @@ function stringToUTF8(str, outPtr, maxBytesToWrite) {
 function lengthBytesUTF8(str) {
   var len = 0;
   for (var i = 0; i < str.length; ++i) {
-    
-    
-    
-    
-    var c = str.charCodeAt(i); 
+
+
+
+
+    var c = str.charCodeAt(i);
     if (c <= 0x7F) {
       len++;
     } else if (c <= 0x7FF) {
@@ -536,11 +536,11 @@ var INITIAL_MEMORY = Module['INITIAL_MEMORY'] || 16777216;
   {
     wasmMemory = new WebAssembly.Memory({
       'initial': INITIAL_MEMORY / 65536,
-      
-      
-      
-      
-      
+
+
+
+
+
       'maximum': 2147483648 / 65536
     });
   }
@@ -568,10 +568,10 @@ var wasmTable;
 
 
 
-var __ATPRERUN__  = []; 
-var __ATINIT__    = []; 
-var __ATEXIT__    = []; 
-var __ATPOSTRUN__ = []; 
+var __ATPRERUN__  = [];
+var __ATINIT__    = [];
+var __ATEXIT__    = [];
+var __ATPOSTRUN__ = [];
 
 var runtimeInitialized = false;
 
@@ -594,7 +594,7 @@ function preRun() {
 function initRuntime() {
   runtimeInitialized = true;
 
-  
+
 if (!Module["noFSInit"] && !FS.init.initialized)
   FS.init();
 FS.ignorePermissions = false;
@@ -651,7 +651,7 @@ function addOnPostRun(cb) {
 
 var runDependencies = 0;
 var runDependencyWatcher = null;
-var dependenciesFulfilled = null; 
+var dependenciesFulfilled = null;
 
 function getUniqueRunDependency(id) {
   return id;
@@ -681,7 +681,7 @@ function removeRunDependency(id) {
     if (dependenciesFulfilled) {
       var callback = dependenciesFulfilled;
       dependenciesFulfilled = null;
-      callback(); 
+      callback();
     }
   }
 }
@@ -693,8 +693,8 @@ function abort(what) {
   }
 
   what = 'Aborted(' + what + ')';
-  
-  
+
+
   err(what);
 
   ABORT = true;
@@ -702,26 +702,26 @@ function abort(what) {
 
   what += '. Build with -sASSERTIONS for more info.';
 
-  
-  
-  
-  
-  
-  
-  
-  
 
-  
-  
-  
-  
-  
+
+
+
+
+
+
+
+
+
+
+
+
+
   var e = new WebAssembly.RuntimeError(what);
 
   readyPromiseReject(e);
-  
-  
-  
+
+
+
   throw e;
 }
 
@@ -739,7 +739,7 @@ var dataURIPrefix = 'data:application/octet-stream;base64,';
 
 
 function isDataURI(filename) {
-  
+
   return filename.startsWith(dataURIPrefix);
 }
 
@@ -756,7 +756,7 @@ if (Module['locateFile']) {
     wasmBinaryFile = locateFile(wasmBinaryFile);
   }
 } else {
-  
+
   wasmBinaryFile = new URL('sqlite3.wasm', import.meta.url).href;
 }
 
@@ -776,11 +776,11 @@ function getBinary(file) {
 }
 
 function getBinaryPromise() {
-  
-  
-  
-  
-  
+
+
+
+
+
   if (!wasmBinary && (ENVIRONMENT_IS_WEB || ENVIRONMENT_IS_WORKER)) {
     if (typeof fetch == 'function'
     ) {
@@ -795,22 +795,22 @@ function getBinaryPromise() {
     }
   }
 
-  
+
   return Promise.resolve().then(function() { return getBinary(wasmBinaryFile); });
 }
 
 
 
 function createWasm() {
-  
+
   var info = {
     'env': asmLibraryArg,
     'wasi_snapshot_preview1': asmLibraryArg,
   };
-  
-  
-  
-  
+
+
+
+
   function receiveInstance(instance, module) {
     var exports = instance.exports;
 
@@ -823,15 +823,15 @@ function createWasm() {
     removeRunDependency('wasm-instantiate');
 
   }
-  
+
   addRunDependency('wasm-instantiate');
 
-  
+
   function receiveInstantiationResult(result) {
-    
-    
-    
-    
+
+
+
+
     receiveInstance(result['instance']);
   }
 
@@ -851,27 +851,27 @@ function createWasm() {
     if (!wasmBinary &&
         typeof WebAssembly.instantiateStreaming == 'function' &&
         !isDataURI(wasmBinaryFile) &&
-        
-        
-        
-        
-        
-        
+
+
+
+
+
+
         !ENVIRONMENT_IS_NODE &&
         typeof fetch == 'function') {
       return fetch(wasmBinaryFile, { credentials: 'same-origin' }).then(function(response) {
-        
-        
-        
-        
-        
+
+
+
+
+
         var result = WebAssembly.instantiateStreaming(response, info);
 
         return result.then(
           receiveInstantiationResult,
           function(reason) {
-            
-            
+
+
             err('wasm streaming compile failed: ' + reason);
             err('falling back to ArrayBuffer instantiation');
             return instantiateArrayBuffer(receiveInstantiationResult);
@@ -882,24 +882,24 @@ function createWasm() {
     }
   }
 
-  
-  
-  
-  
+
+
+
+
   if (Module['instantiateWasm']) {
     try {
       var exports = Module['instantiateWasm'](info, receiveInstance);
       return exports;
     } catch(e) {
       err('Module.instantiateWasm callback failed with error: ' + e);
-        
+
         readyPromiseReject(e);
     }
   }
 
-  
+
   instantiateAsync().catch(readyPromiseReject);
-  return {}; 
+  return {};
 }
 
 
@@ -909,14 +909,14 @@ var tempI64;
 
 
 var ASM_CONSTS = {
-  
+
 };
 
 
 
 
 
-  
+
   function ExitStatus(status) {
       this.name = 'ExitStatus';
       this.message = 'Program terminated with exit(' + status + ')';
@@ -925,13 +925,13 @@ var ASM_CONSTS = {
 
   function callRuntimeCallbacks(callbacks) {
       while (callbacks.length > 0) {
-        
+
         callbacks.shift()(Module);
       }
     }
 
-  
-    
+
+
   function getValue(ptr, type = 'i8') {
       if (type.endsWith('*')) type = '*';
       switch (type) {
@@ -948,8 +948,8 @@ var ASM_CONSTS = {
       return null;
     }
 
-  
-    
+
+
   function setValue(ptr, value, type = 'i8') {
       if (type.endsWith('*')) type = '*';
       switch (type) {
@@ -969,7 +969,7 @@ var ASM_CONSTS = {
         var splitPathRe = /^(\/?|)([\s\S]*?)((?:\.{1,2}|[^\/]+?|)(\.[^.\/]*|))(?:[\/]*)$/;
         return splitPathRe.exec(filename).slice(1);
       },normalizeArray:(parts, allowAboveRoot) => {
-        
+
         var up = 0;
         for (var i = parts.length - 1; i >= 0; i--) {
           var last = parts[i];
@@ -983,7 +983,7 @@ var ASM_CONSTS = {
             up--;
           }
         }
-        
+
         if (allowAboveRoot) {
           for (; up; up--) {
             parts.unshift('..');
@@ -993,7 +993,7 @@ var ASM_CONSTS = {
       },normalize:(path) => {
         var isAbsolute = PATH.isAbs(path),
             trailingSlash = path.substr(-1) === '/';
-        
+
         path = PATH.normalizeArray(path.split('/').filter((p) => !!p), !isAbsolute).join('/');
         if (!path && !isAbsolute) {
           path = '.';
@@ -1007,16 +1007,16 @@ var ASM_CONSTS = {
             root = result[0],
             dir = result[1];
         if (!root && !dir) {
-          
+
           return '.';
         }
         if (dir) {
-          
+
           dir = dir.substr(0, dir.length - 1);
         }
         return root + dir;
       },basename:(path) => {
-        
+
         if (path === '/') return '/';
         path = PATH.normalize(path);
         path = path.replace(/\/$/, "");
@@ -1029,45 +1029,45 @@ var ASM_CONSTS = {
       },join2:(l, r) => {
         return PATH.normalize(l + '/' + r);
       }};
-  
+
   function getRandomDevice() {
       if (typeof crypto == 'object' && typeof crypto['getRandomValues'] == 'function') {
-        
+
         var randomBuffer = new Uint8Array(1);
         return () => { crypto.getRandomValues(randomBuffer); return randomBuffer[0]; };
       } else
       if (ENVIRONMENT_IS_NODE) {
-        
+
         try {
           var crypto_module = require('crypto');
-          
+
           return () => crypto_module['randomBytes'](1)[0];
         } catch (e) {
-          
+
         }
       }
-      
+
       return () => abort("randomDevice");
     }
-  
-  
-  
+
+
+
   var PATH_FS = {resolve:function() {
         var resolvedPath = '',
           resolvedAbsolute = false;
         for (var i = arguments.length - 1; i >= -1 && !resolvedAbsolute; i--) {
           var path = (i >= 0) ? arguments[i] : FS.cwd();
-          
+
           if (typeof path != 'string') {
             throw new TypeError('Arguments to path.resolve must be strings');
           } else if (!path) {
-            return ''; 
+            return '';
           }
           resolvedPath = path + '/' + resolvedPath;
           resolvedAbsolute = PATH.isAbs(path);
         }
-        
-        
+
+
         resolvedPath = PATH.normalizeArray(resolvedPath.split('/').filter((p) => !!p), !resolvedAbsolute).join('/');
         return ((resolvedAbsolute ? '/' : '') + resolvedPath) || '.';
       },relative:(from, to) => {
@@ -1102,9 +1102,9 @@ var ASM_CONSTS = {
         outputParts = outputParts.concat(toParts.slice(samePartsLength));
         return outputParts.join('/');
       }};
-  
-  
-  
+
+
+
   function intArrayFromString(stringy, dontAddNull, length) {
     var len = length > 0 ? length : lengthBytesUTF8(stringy)+1;
     var u8array = new Array(len);
@@ -1113,24 +1113,24 @@ var ASM_CONSTS = {
     return u8array;
   }
   var TTY = {ttys:[],init:function () {
-        
-        
-        
-        
-        
-        
-        
-        
+
+
+
+
+
+
+
+
       },shutdown:function() {
-        
-        
-        
-        
-        
-        
-        
-        
-        
+
+
+
+
+
+
+
+
+
       },register:function(dev, ops) {
         TTY.ttys[dev] = { input: [], output: [], ops: ops };
         FS.registerDevice(dev, TTY.stream_ops);
@@ -1142,7 +1142,7 @@ var ASM_CONSTS = {
           stream.tty = tty;
           stream.seekable = false;
         },close:function(stream) {
-          
+
           stream.tty.ops.fsync(stream.tty);
         },fsync:function(stream) {
           stream.tty.ops.fsync(stream.tty);
@@ -1188,20 +1188,20 @@ var ASM_CONSTS = {
           if (!tty.input.length) {
             var result = null;
             if (ENVIRONMENT_IS_NODE) {
-              
+
               var BUFSIZE = 256;
               var buf = Buffer.alloc(BUFSIZE);
               var bytesRead = 0;
-  
+
               try {
                 bytesRead = fs.readSync(process.stdin.fd, buf, 0, BUFSIZE, -1);
               } catch(e) {
-                
-                
+
+
                 if (e.toString().includes('EOF')) bytesRead = 0;
                 else throw e;
               }
-  
+
               if (bytesRead > 0) {
                 result = buf.slice(0, bytesRead).toString('utf-8');
               } else {
@@ -1210,13 +1210,13 @@ var ASM_CONSTS = {
             } else
             if (typeof window != 'undefined' &&
               typeof window.prompt == 'function') {
-              
-              result = window.prompt('Input: ');  
+
+              result = window.prompt('Input: ');
               if (result !== null) {
                 result += '\n';
               }
             } else if (typeof readline == 'function') {
-              
+
               result = readline();
               if (result !== null) {
                 result += '\n';
@@ -1233,7 +1233,7 @@ var ASM_CONSTS = {
             out(UTF8ArrayToString(tty.output, 0));
             tty.output = [];
           } else {
-            if (val != 0) tty.output.push(val); 
+            if (val != 0) tty.output.push(val);
           }
         },fsync:function(tty) {
           if (tty.output && tty.output.length > 0) {
@@ -1253,13 +1253,13 @@ var ASM_CONSTS = {
             tty.output = [];
           }
         }}};
-  
-  
+
+
   function zeroMemory(address, size) {
       HEAPU8.fill(0, address, address + size);
       return address;
     }
-  
+
   function alignMemory(size, alignment) {
       return Math.ceil(size / alignment) * alignment;
     }
@@ -1273,7 +1273,7 @@ var ASM_CONSTS = {
         return MEMFS.createNode(null, '/', 16384 | 511 , 0);
       },createNode:function(parent, name, mode, dev) {
         if (FS.isBlkdev(mode) || FS.isFIFO(mode)) {
-          
+
           throw new FS.ErrnoError(63);
         }
         if (!MEMFS.ops_table) {
@@ -1333,11 +1333,11 @@ var ASM_CONSTS = {
         } else if (FS.isFile(node.mode)) {
           node.node_ops = MEMFS.ops_table.file.node;
           node.stream_ops = MEMFS.ops_table.file.stream;
-          node.usedBytes = 0; 
-          
-          
-          
-          node.contents = null; 
+          node.usedBytes = 0;
+
+
+
+          node.contents = null;
         } else if (FS.isLink(node.mode)) {
           node.node_ops = MEMFS.ops_table.link.node;
           node.stream_ops = MEMFS.ops_table.link.stream;
@@ -1346,7 +1346,7 @@ var ASM_CONSTS = {
           node.stream_ops = MEMFS.ops_table.chrdev.stream;
         }
         node.timestamp = Date.now();
-        
+
         if (parent) {
           parent.contents[name] = node;
           parent.timestamp = node.timestamp;
@@ -1354,36 +1354,36 @@ var ASM_CONSTS = {
         return node;
       },getFileDataAsTypedArray:function(node) {
         if (!node.contents) return new Uint8Array(0);
-        if (node.contents.subarray) return node.contents.subarray(0, node.usedBytes); 
+        if (node.contents.subarray) return node.contents.subarray(0, node.usedBytes);
         return new Uint8Array(node.contents);
       },expandFileStorage:function(node, newCapacity) {
         var prevCapacity = node.contents ? node.contents.length : 0;
-        if (prevCapacity >= newCapacity) return; 
-        
-        
-        
+        if (prevCapacity >= newCapacity) return;
+
+
+
         var CAPACITY_DOUBLING_MAX = 1024 * 1024;
         newCapacity = Math.max(newCapacity, (prevCapacity * (prevCapacity < CAPACITY_DOUBLING_MAX ? 2.0 : 1.125)) >>> 0);
-        if (prevCapacity != 0) newCapacity = Math.max(newCapacity, 256); 
+        if (prevCapacity != 0) newCapacity = Math.max(newCapacity, 256);
         var oldContents = node.contents;
-        node.contents = new Uint8Array(newCapacity); 
-        if (node.usedBytes > 0) node.contents.set(oldContents.subarray(0, node.usedBytes), 0); 
+        node.contents = new Uint8Array(newCapacity);
+        if (node.usedBytes > 0) node.contents.set(oldContents.subarray(0, node.usedBytes), 0);
       },resizeFileStorage:function(node, newSize) {
         if (node.usedBytes == newSize) return;
         if (newSize == 0) {
-          node.contents = null; 
+          node.contents = null;
           node.usedBytes = 0;
         } else {
           var oldContents = node.contents;
-          node.contents = new Uint8Array(newSize); 
+          node.contents = new Uint8Array(newSize);
           if (oldContents) {
-            node.contents.set(oldContents.subarray(0, Math.min(newSize, node.usedBytes))); 
+            node.contents.set(oldContents.subarray(0, Math.min(newSize, node.usedBytes)));
           }
           node.usedBytes = newSize;
         }
       },node_ops:{getattr:function(node) {
           var attr = {};
-          
+
           attr.dev = FS.isChrdev(node.mode) ? node.id : 1;
           attr.ino = node.id;
           attr.mode = node.mode;
@@ -1403,8 +1403,8 @@ var ASM_CONSTS = {
           attr.atime = new Date(node.timestamp);
           attr.mtime = new Date(node.timestamp);
           attr.ctime = new Date(node.timestamp);
-          
-          
+
+
           attr.blksize = 4096;
           attr.blocks = Math.ceil(attr.size / attr.blksize);
           return attr;
@@ -1423,7 +1423,7 @@ var ASM_CONSTS = {
         },mknod:function(parent, name, mode, dev) {
           return MEMFS.createNode(parent, name, mode, dev);
         },rename:function(old_node, new_dir, new_name) {
-          
+
           if (FS.isDir(old_node.mode)) {
             var new_node;
             try {
@@ -1436,7 +1436,7 @@ var ASM_CONSTS = {
               }
             }
           }
-          
+
           delete old_node.parent.contents[old_node.name];
           old_node.parent.timestamp = Date.now()
           old_node.name = new_name;
@@ -1475,48 +1475,48 @@ var ASM_CONSTS = {
           var contents = stream.node.contents;
           if (position >= stream.node.usedBytes) return 0;
           var size = Math.min(stream.node.usedBytes - position, length);
-          if (size > 8 && contents.subarray) { 
+          if (size > 8 && contents.subarray) {
             buffer.set(contents.subarray(position, position + size), offset);
           } else {
             for (var i = 0; i < size; i++) buffer[offset + i] = contents[position + i];
           }
           return size;
         },write:function(stream, buffer, offset, length, position, canOwn) {
-          
-          
-          
-          
+
+
+
+
           if (buffer.buffer === HEAP8.buffer) {
             canOwn = false;
           }
-  
+
           if (!length) return 0;
           var node = stream.node;
           node.timestamp = Date.now();
-  
-          if (buffer.subarray && (!node.contents || node.contents.subarray)) { 
+
+          if (buffer.subarray && (!node.contents || node.contents.subarray)) {
             if (canOwn) {
               node.contents = buffer.subarray(offset, offset + length);
               node.usedBytes = length;
               return length;
-            } else if (node.usedBytes === 0 && position === 0) { 
+            } else if (node.usedBytes === 0 && position === 0) {
               node.contents = buffer.slice(offset, offset + length);
               node.usedBytes = length;
               return length;
-            } else if (position + length <= node.usedBytes) { 
+            } else if (position + length <= node.usedBytes) {
               node.contents.set(buffer.subarray(offset, offset + length), position);
               return length;
             }
           }
-  
-          
+
+
           MEMFS.expandFileStorage(node, position+length);
           if (node.contents.subarray && buffer.subarray) {
-            
+
             node.contents.set(buffer.subarray(offset, offset + length), position);
           } else {
             for (var i = 0; i < length; i++) {
-             node.contents[position + i] = buffer[offset + i]; 
+             node.contents[position + i] = buffer[offset + i];
             }
           }
           node.usedBytes = Math.max(node.usedBytes, position + length);
@@ -1544,14 +1544,14 @@ var ASM_CONSTS = {
           var ptr;
           var allocated;
           var contents = stream.node.contents;
-          
+
           if (!(flags & 2) && contents.buffer === HEAP8.buffer) {
-            
-            
+
+
             allocated = false;
             ptr = contents.byteOffset;
           } else {
-            
+
             if (position > 0 || position + length < contents.length) {
               if (contents.subarray) {
                 contents = contents.subarray(position, position + length);
@@ -1569,11 +1569,11 @@ var ASM_CONSTS = {
           return { ptr: ptr, allocated: allocated };
         },msync:function(stream, buffer, offset, length, mmapFlags) {
           MEMFS.stream_ops.write(stream, buffer, 0, length, offset, false);
-          
+
           return 0;
         }}};
-  
-  
+
+
   function asyncLoad(url, onload, onerror, noRunDep) {
       var dep = !noRunDep ? getUniqueRunDependency('al ' + url) : '';
       readAsync(url, (arrayBuffer) => {
@@ -1589,64 +1589,64 @@ var ASM_CONSTS = {
       });
       if (dep) addRunDependency(dep);
     }
-  
+
   var FS = {root:null,mounts:[],devices:{},streams:[],nextInode:1,nameTable:null,currentPath:"/",initialized:false,ignorePermissions:true,ErrnoError:null,genericErrors:{},filesystems:null,syncFSRequests:0,lookupPath:(path, opts = {}) => {
         path = PATH_FS.resolve(path);
-  
+
         if (!path) return { path: '', node: null };
-  
+
         var defaults = {
           follow_mount: true,
           recurse_count: 0
         };
         opts = Object.assign(defaults, opts)
-  
-        if (opts.recurse_count > 8) {  
+
+        if (opts.recurse_count > 8) {
           throw new FS.ErrnoError(32);
         }
-  
-        
+
+
         var parts = path.split('/').filter((p) => !!p);
-  
-        
+
+
         var current = FS.root;
         var current_path = '/';
-  
+
         for (var i = 0; i < parts.length; i++) {
           var islast = (i === parts.length-1);
           if (islast && opts.parent) {
-            
+
             break;
           }
-  
+
           current = FS.lookupNode(current, parts[i]);
           current_path = PATH.join2(current_path, parts[i]);
-  
-          
+
+
           if (FS.isMountpoint(current)) {
             if (!islast || (islast && opts.follow_mount)) {
               current = current.mounted.root;
             }
           }
-  
-          
-          
+
+
+
           if (!islast || opts.follow) {
             var count = 0;
             while (FS.isLink(current.mode)) {
               var link = FS.readlink(current_path);
               current_path = PATH_FS.resolve(PATH.dirname(current_path), link);
-  
+
               var lookup = FS.lookupPath(current_path, { recurse_count: opts.recurse_count + 1 });
               current = lookup.node;
-  
-              if (count++ > 40) {  
+
+              if (count++ > 40) {
                 throw new FS.ErrnoError(32);
               }
             }
           }
         }
-  
+
         return { path: current_path, node: current };
       },getPath:(node) => {
         var path;
@@ -1661,7 +1661,7 @@ var ASM_CONSTS = {
         }
       },hashName:(parentid, name) => {
         var hash = 0;
-  
+
         for (var i = 0; i < name.length; i++) {
           hash = ((hash << 5) - hash + name.charCodeAt(i)) | 0;
         }
@@ -1696,13 +1696,13 @@ var ASM_CONSTS = {
             return node;
           }
         }
-        
+
         return FS.lookup(parent, name);
       },createNode:(parent, name, mode, rdev) => {
         var node = new FS.FSNode(parent, name, mode, rdev);
-  
+
         FS.hashAddNode(node);
-  
+
         return node;
       },destroyNode:(node) => {
         FS.hashRemoveNode(node);
@@ -1740,7 +1740,7 @@ var ASM_CONSTS = {
         if (FS.ignorePermissions) {
           return 0;
         }
-        
+
         if (perms.includes('r') && !(node.mode & 292)) {
           return 2;
         } else if (perms.includes('w') && !(node.mode & 146)) {
@@ -1792,8 +1792,8 @@ var ASM_CONSTS = {
         if (FS.isLink(node.mode)) {
           return 32;
         } else if (FS.isDir(node.mode)) {
-          if (FS.flagsToPermissionString(flags) !== 'r' || 
-              (flags & 512)) { 
+          if (FS.flagsToPermissionString(flags) !== 'r' ||
+              (flags & 512)) {
             return 31;
           }
         }
@@ -1813,38 +1813,38 @@ var ASM_CONSTS = {
           FS.FSStream.prototype = {};
           Object.defineProperties(FS.FSStream.prototype, {
             object: {
-              
+
               get: function() { return this.node; },
-              
+
               set: function(val) { this.node = val; }
             },
             isRead: {
-              
+
               get: function() { return (this.flags & 2097155) !== 1; }
             },
             isWrite: {
-              
+
               get: function() { return (this.flags & 2097155) !== 0; }
             },
             isAppend: {
-              
+
               get: function() { return (this.flags & 1024); }
             },
             flags: {
-              
+
               get: function() { return this.shared.flags; },
-              
+
               set: function(val) { this.shared.flags = val; },
             },
             position : {
-              
+
               get: function() { return this.shared.position; },
-              
+
               set: function(val) { this.shared.position = val; },
             },
           });
         }
-        
+
         stream = Object.assign(new FS.FSStream(), stream);
         var fd = FS.nextfd(fd_start, fd_end);
         stream.fd = fd;
@@ -1854,9 +1854,9 @@ var ASM_CONSTS = {
         FS.streams[fd] = null;
       },chrdev_stream_ops:{open:(stream) => {
           var device = FS.getDevice(stream.node.rdev);
-          
+
           stream.stream_ops = device.stream_ops;
-          
+
           if (stream.stream_ops.open) {
             stream.stream_ops.open(stream);
           }
@@ -1867,36 +1867,36 @@ var ASM_CONSTS = {
       },getDevice:(dev) => FS.devices[dev],getMounts:(mount) => {
         var mounts = [];
         var check = [mount];
-  
+
         while (check.length) {
           var m = check.pop();
-  
+
           mounts.push(m);
-  
+
           check.push.apply(check, m.mounts);
         }
-  
+
         return mounts;
       },syncfs:(populate, callback) => {
         if (typeof populate == 'function') {
           callback = populate;
           populate = false;
         }
-  
+
         FS.syncFSRequests++;
-  
+
         if (FS.syncFSRequests > 1) {
           err('warning: ' + FS.syncFSRequests + ' FS.syncfs operations in flight at once, probably just doing extra work');
         }
-  
+
         var mounts = FS.getMounts(FS.root.mount);
         var completed = 0;
-  
+
         function doCallback(errCode) {
           FS.syncFSRequests--;
           return callback(errCode);
         }
-  
+
         function done(errCode) {
           if (errCode) {
             if (!done.errored) {
@@ -1909,8 +1909,8 @@ var ASM_CONSTS = {
             doCallback(null);
           }
         };
-  
-        
+
+
         mounts.forEach((mount) => {
           if (!mount.type.syncfs) {
             return done(null);
@@ -1921,79 +1921,79 @@ var ASM_CONSTS = {
         var root = mountpoint === '/';
         var pseudo = !mountpoint;
         var node;
-  
+
         if (root && FS.root) {
           throw new FS.ErrnoError(10);
         } else if (!root && !pseudo) {
           var lookup = FS.lookupPath(mountpoint, { follow_mount: false });
-  
-          mountpoint = lookup.path;  
+
+          mountpoint = lookup.path;
           node = lookup.node;
-  
+
           if (FS.isMountpoint(node)) {
             throw new FS.ErrnoError(10);
           }
-  
+
           if (!FS.isDir(node.mode)) {
             throw new FS.ErrnoError(54);
           }
         }
-  
+
         var mount = {
           type: type,
           opts: opts,
           mountpoint: mountpoint,
           mounts: []
         };
-  
-        
+
+
         var mountRoot = type.mount(mount);
         mountRoot.mount = mount;
         mount.root = mountRoot;
-  
+
         if (root) {
           FS.root = mountRoot;
         } else if (node) {
-          
+
           node.mounted = mount;
-  
-          
+
+
           if (node.mount) {
             node.mount.mounts.push(mount);
           }
         }
-  
+
         return mountRoot;
       },unmount:(mountpoint) => {
         var lookup = FS.lookupPath(mountpoint, { follow_mount: false });
-  
+
         if (!FS.isMountpoint(lookup.node)) {
           throw new FS.ErrnoError(28);
         }
-  
-        
+
+
         var node = lookup.node;
         var mount = node.mounted;
         var mounts = FS.getMounts(mount);
-  
+
         Object.keys(FS.nameTable).forEach((hash) => {
           var current = FS.nameTable[hash];
-  
+
           while (current) {
             var next = current.name_next;
-  
+
             if (mounts.includes(current.mount)) {
               FS.destroyNode(current);
             }
-  
+
             current = next;
           }
         });
-  
-        
+
+
         node.mounted = null;
-  
-        
+
+
         var idx = node.mount.mounts.indexOf(mount);
         node.mount.mounts.splice(idx, 1);
       },lookup:(parent, name) => {
@@ -2065,51 +2065,51 @@ var ASM_CONSTS = {
         var new_dirname = PATH.dirname(new_path);
         var old_name = PATH.basename(old_path);
         var new_name = PATH.basename(new_path);
-        
+
         var lookup, old_dir, new_dir;
-  
-        
+
+
         lookup = FS.lookupPath(old_path, { parent: true });
         old_dir = lookup.node;
         lookup = FS.lookupPath(new_path, { parent: true });
         new_dir = lookup.node;
-  
+
         if (!old_dir || !new_dir) throw new FS.ErrnoError(44);
-        
+
         if (old_dir.mount !== new_dir.mount) {
           throw new FS.ErrnoError(75);
         }
-        
+
         var old_node = FS.lookupNode(old_dir, old_name);
-        
+
         var relative = PATH_FS.relative(old_path, new_dirname);
         if (relative.charAt(0) !== '.') {
           throw new FS.ErrnoError(28);
         }
-        
+
         relative = PATH_FS.relative(new_path, old_dirname);
         if (relative.charAt(0) !== '.') {
           throw new FS.ErrnoError(55);
         }
-        
+
         var new_node;
         try {
           new_node = FS.lookupNode(new_dir, new_name);
         } catch (e) {
-          
+
         }
-        
+
         if (old_node === new_node) {
           return;
         }
-        
+
         var isdir = FS.isDir(old_node.mode);
         var errCode = FS.mayDelete(old_dir, old_name, isdir);
         if (errCode) {
           throw new FS.ErrnoError(errCode);
         }
-        
-        
+
+
         errCode = new_node ?
           FS.mayDelete(new_dir, new_name, isdir) :
           FS.mayCreate(new_dir, new_name);
@@ -2122,23 +2122,23 @@ var ASM_CONSTS = {
         if (FS.isMountpoint(old_node) || (new_node && FS.isMountpoint(new_node))) {
           throw new FS.ErrnoError(10);
         }
-        
+
         if (new_dir !== old_dir) {
           errCode = FS.nodePermissions(old_dir, 'w');
           if (errCode) {
             throw new FS.ErrnoError(errCode);
           }
         }
-        
+
         FS.hashRemoveNode(old_node);
-        
+
         try {
           old_dir.node_ops.rename(old_node, new_dir, new_name);
         } catch (e) {
           throw e;
         } finally {
-          
-          
+
+
           FS.hashAddNode(old_node);
         }
       },rmdir:(path) => {
@@ -2175,9 +2175,9 @@ var ASM_CONSTS = {
         var node = FS.lookupNode(parent, name);
         var errCode = FS.mayDelete(parent, name, false);
         if (errCode) {
-          
-          
-          
+
+
+
           throw new FS.ErrnoError(errCode);
         }
         if (!parent.node_ops.unlink) {
@@ -2246,7 +2246,7 @@ var ASM_CONSTS = {
         }
         node.node_ops.setattr(node, {
           timestamp: Date.now()
-          
+
         });
       },lchown:(path, uid, gid) => {
         FS.chown(path, uid, gid, true);
@@ -2321,19 +2321,19 @@ var ASM_CONSTS = {
             });
             node = lookup.node;
           } catch (e) {
-            
+
           }
         }
-        
+
         var created = false;
         if ((flags & 64)) {
           if (node) {
-            
+
             if ((flags & 128)) {
               throw new FS.ErrnoError(20);
             }
           } else {
-            
+
             node = FS.mknod(path, mode, 0);
             created = true;
           }
@@ -2341,43 +2341,43 @@ var ASM_CONSTS = {
         if (!node) {
           throw new FS.ErrnoError(44);
         }
-        
+
         if (FS.isChrdev(node.mode)) {
           flags &= ~512;
         }
-        
+
         if ((flags & 65536) && !FS.isDir(node.mode)) {
           throw new FS.ErrnoError(54);
         }
-        
-        
-        
+
+
+
         if (!created) {
           var errCode = FS.mayOpen(node, flags);
           if (errCode) {
             throw new FS.ErrnoError(errCode);
           }
         }
-        
+
         if ((flags & 512) && !created) {
           FS.truncate(node, 0);
         }
-        
+
         flags &= ~(128 | 512 | 131072);
-  
-        
+
+
         var stream = FS.createStream({
           node: node,
-          path: FS.getPath(node),  
+          path: FS.getPath(node),
           flags: flags,
           seekable: true,
           position: 0,
           stream_ops: node.stream_ops,
-          
+
           ungotten: [],
           error: false
         });
-        
+
         if (stream.stream_ops.open) {
           stream.stream_ops.open(stream);
         }
@@ -2392,7 +2392,7 @@ var ASM_CONSTS = {
         if (FS.isClosed(stream)) {
           throw new FS.ErrnoError(8);
         }
-        if (stream.getdents) stream.getdents = null; 
+        if (stream.getdents) stream.getdents = null;
         try {
           if (stream.stream_ops.close) {
             stream.stream_ops.close(stream);
@@ -2460,7 +2460,7 @@ var ASM_CONSTS = {
           throw new FS.ErrnoError(28);
         }
         if (stream.seekable && stream.flags & 1024) {
-          
+
           FS.llseek(stream, 0, 2);
         }
         var seeking = typeof position != 'undefined';
@@ -2490,12 +2490,12 @@ var ASM_CONSTS = {
         }
         stream.stream_ops.allocate(stream, offset, length);
       },mmap:(stream, length, position, prot, flags) => {
-        
-        
-        
-        
-        
-        
+
+
+
+
+
+
         if ((prot & 2) !== 0
             && (flags & 2) === 0
             && (stream.flags & 2097155) !== 2) {
@@ -2568,32 +2568,32 @@ var ASM_CONSTS = {
         FS.mkdir('/home');
         FS.mkdir('/home/web_user');
       },createDefaultDevices:() => {
-        
+
         FS.mkdir('/dev');
-        
+
         FS.registerDevice(FS.makedev(1, 3), {
           read: () => 0,
           write: (stream, buffer, offset, length, pos) => length,
         });
         FS.mkdev('/dev/null', FS.makedev(1, 3));
-        
-        
-        
+
+
+
         TTY.register(FS.makedev(5, 0), TTY.default_tty_ops);
         TTY.register(FS.makedev(6, 0), TTY.default_tty1_ops);
         FS.mkdev('/dev/tty', FS.makedev(5, 0));
         FS.mkdev('/dev/tty1', FS.makedev(6, 0));
-        
+
         var random_device = getRandomDevice();
         FS.createDevice('/dev', 'random', random_device);
         FS.createDevice('/dev', 'urandom', random_device);
-        
-        
+
+
         FS.mkdir('/dev/shm');
         FS.mkdir('/dev/shm/tmp');
       },createSpecialDirectories:() => {
-        
-        
+
+
         FS.mkdir('/proc');
         var proc_self = FS.mkdir('/proc/self');
         FS.mkdir('/proc/self/fd');
@@ -2610,7 +2610,7 @@ var ASM_CONSTS = {
                   mount: { mountpoint: 'fake' },
                   node_ops: { readlink: () => stream.path },
                 };
-                ret.parent = ret; 
+                ret.parent = ret;
                 return ret;
               }
             };
@@ -2618,14 +2618,14 @@ var ASM_CONSTS = {
           }
         }, {}, '/proc/self/fd');
       },createStandardStreams:() => {
-        
-        
-        
-  
-        
-        
-        
-        
+
+
+
+
+
+
+
+
         if (Module['stdin']) {
           FS.createDevice('/dev', 'stdin', Module['stdin']);
         } else {
@@ -2641,8 +2641,8 @@ var ASM_CONSTS = {
         } else {
           FS.symlink('/dev/tty1', '/dev/stderr');
         }
-  
-        
+
+
         var stdin = FS.open('/dev/stdin', 0);
         var stdout = FS.open('/dev/stdout', 1);
         var stderr = FS.open('/dev/stderr', 1);
@@ -2655,44 +2655,44 @@ var ASM_CONSTS = {
           };
           this.setErrno(errno);
           this.message = 'FS error';
-  
+
         };
         FS.ErrnoError.prototype = new Error();
         FS.ErrnoError.prototype.constructor = FS.ErrnoError;
-        
+
         [44].forEach((code) => {
           FS.genericErrors[code] = new FS.ErrnoError(code);
           FS.genericErrors[code].stack = '<generic error, no stack>';
         });
       },staticInit:() => {
         FS.ensureErrnoError();
-  
+
         FS.nameTable = new Array(4096);
-  
+
         FS.mount(MEMFS, {}, '/');
-  
+
         FS.createDefaultDirectories();
         FS.createDefaultDevices();
         FS.createSpecialDirectories();
-  
+
         FS.filesystems = {
           'MEMFS': MEMFS,
         };
       },init:(input, output, error) => {
         FS.init.initialized = true;
-  
+
         FS.ensureErrnoError();
-  
-        
+
+
         Module['stdin'] = input || Module['stdin'];
         Module['stdout'] = output || Module['stdout'];
         Module['stderr'] = error || Module['stderr'];
-  
+
         FS.createStandardStreams();
       },quit:() => {
         FS.init.initialized = false;
-        
-        
+
+
         for (var i = 0; i < FS.streams.length; i++) {
           var stream = FS.streams[i];
           if (!stream) {
@@ -2712,7 +2712,7 @@ var ASM_CONSTS = {
         }
         return ret.object;
       },analyzePath:(path, dontResolveLastLink) => {
-        
+
         try {
           var lookup = FS.lookupPath(path, { follow: !dontResolveLastLink });
           path = lookup.path;
@@ -2748,7 +2748,7 @@ var ASM_CONSTS = {
           try {
             FS.mkdir(current);
           } catch (e) {
-            
+
           }
           parent = current;
         }
@@ -2771,7 +2771,7 @@ var ASM_CONSTS = {
             for (var i = 0, len = data.length; i < len; ++i) arr[i] = data.charCodeAt(i);
             data = arr;
           }
-          
+
           FS.chmod(node, mode | 146);
           var stream = FS.open(node, 577);
           FS.write(stream, data, 0, data.length, 0, canOwn);
@@ -2784,14 +2784,14 @@ var ASM_CONSTS = {
         var mode = FS.getMode(!!input, !!output);
         if (!FS.createDevice.major) FS.createDevice.major = 64;
         var dev = FS.makedev(FS.createDevice.major++, 0);
-        
-        
+
+
         FS.registerDevice(dev, {
           open: (stream) => {
             stream.seekable = false;
           },
           close: (stream) => {
-            
+
             if (output && output.buffer && output.buffer.length) {
               output(10);
             }
@@ -2837,10 +2837,10 @@ var ASM_CONSTS = {
         if (typeof XMLHttpRequest != 'undefined') {
           throw new Error("Lazy loading should have been performed (contents set) in createLazyFile, but it was not. Lazy loading only works in web workers. Use --embed-file or --preload-file in emcc on the main thread.");
         } else if (read_) {
-          
+
           try {
-            
-            
+
+
             obj.contents = intArrayFromString(read_(obj.url), true);
             obj.usedBytes = obj.contents.length;
           } catch (e) {
@@ -2850,11 +2850,11 @@ var ASM_CONSTS = {
           throw new Error('Cannot load without read() or XMLHttpRequest.');
         }
       },createLazyFile:(parent, name, url, canRead, canWrite) => {
-        
-        
+
+
         function LazyUint8Array() {
           this.lengthKnown = false;
-          this.chunks = []; 
+          this.chunks = [];
         }
         LazyUint8Array.prototype.get =  function LazyUint8Array_get(idx) {
           if (idx > this.length-1 || idx < 0) {
@@ -2868,7 +2868,7 @@ var ASM_CONSTS = {
           this.getter = getter;
         };
         LazyUint8Array.prototype.cacheLength = function LazyUint8Array_cacheLength() {
-          
+
           var xhr = new XMLHttpRequest();
           xhr.open('HEAD', url, false);
           xhr.send(null);
@@ -2877,27 +2877,27 @@ var ASM_CONSTS = {
           var header;
           var hasByteServing = (header = xhr.getResponseHeader("Accept-Ranges")) && header === "bytes";
           var usesGzip = (header = xhr.getResponseHeader("Content-Encoding")) && header === "gzip";
-  
-          var chunkSize = 1024*1024; 
-  
+
+          var chunkSize = 1024*1024;
+
           if (!hasByteServing) chunkSize = datalength;
-  
-          
+
+
           var doXHR = (from, to) => {
             if (from > to) throw new Error("invalid range (" + from + ", " + to + ") or no bytes requested!");
             if (to > datalength-1) throw new Error("only " + datalength + " bytes available! programmer error!");
-  
-            
+
+
             var xhr = new XMLHttpRequest();
             xhr.open('GET', url, false);
             if (datalength !== chunkSize) xhr.setRequestHeader("Range", "bytes=" + from + "-" + to);
-  
-            
+
+
             xhr.responseType = 'arraybuffer';
             if (xhr.overrideMimeType) {
               xhr.overrideMimeType('text/plain; charset=x-user-defined');
             }
-  
+
             xhr.send(null);
             if (!(xhr.status >= 200 && xhr.status < 300 || xhr.status === 304)) throw new Error("Couldn't load " + url + ". Status: " + xhr.status);
             if (xhr.response !== undefined) {
@@ -2908,23 +2908,23 @@ var ASM_CONSTS = {
           var lazyArray = this;
           lazyArray.setDataGetter((chunkNum) => {
             var start = chunkNum * chunkSize;
-            var end = (chunkNum+1) * chunkSize - 1; 
-            end = Math.min(end, datalength-1); 
+            var end = (chunkNum+1) * chunkSize - 1;
+            end = Math.min(end, datalength-1);
             if (typeof lazyArray.chunks[chunkNum] == 'undefined') {
               lazyArray.chunks[chunkNum] = doXHR(start, end);
             }
             if (typeof lazyArray.chunks[chunkNum] == 'undefined') throw new Error('doXHR failed!');
             return lazyArray.chunks[chunkNum];
           });
-  
+
           if (usesGzip || !datalength) {
-            
-            chunkSize = datalength = 1; 
+
+            chunkSize = datalength = 1;
             datalength = this.getter(0).length;
             chunkSize = datalength;
             out("LazyFiles on gzip forces download of the whole file when length is accessed");
           }
-  
+
           this._length = datalength;
           this._chunkSize = chunkSize;
           this.lengthKnown = true;
@@ -2950,29 +2950,29 @@ var ASM_CONSTS = {
               }
             }
           });
-  
+
           var properties = { isDevice: false, contents: lazyArray };
         } else {
           var properties = { isDevice: false, url: url };
         }
-  
+
         var node = FS.createFile(parent, name, properties, canRead, canWrite);
-        
-        
-        
+
+
+
         if (properties.contents) {
           node.contents = properties.contents;
         } else if (properties.url) {
           node.contents = null;
           node.url = properties.url;
         }
-        
+
         Object.defineProperties(node, {
           usedBytes: {
             get:  function() { return this.contents.length; }
           }
         });
-        
+
         var stream_ops = {};
         var keys = Object.keys(node.stream_ops);
         keys.forEach((key) => {
@@ -2987,23 +2987,23 @@ var ASM_CONSTS = {
           if (position >= contents.length)
             return 0;
           var size = Math.min(contents.length - position, length);
-          if (contents.slice) { 
+          if (contents.slice) {
             for (var i = 0; i < size; i++) {
               buffer[offset + i] = contents[position + i];
             }
           } else {
-            for (var i = 0; i < size; i++) { 
+            for (var i = 0; i < size; i++) {
               buffer[offset + i] = contents.get(position + i);
             }
           }
           return size;
         }
-        
+
         stream_ops.read = (stream, buffer, offset, length, position) => {
           FS.forceLoadFile(node);
           return writeChunks(stream, buffer, offset, length, position)
         };
-        
+
         stream_ops.mmap = (stream, length, position, prot, flags) => {
           FS.forceLoadFile(node);
           var ptr = mmapAlloc(length);
@@ -3016,10 +3016,10 @@ var ASM_CONSTS = {
         node.stream_ops = stream_ops;
         return node;
       },createPreloadedFile:(parent, name, url, canRead, canWrite, onload, onerror, dontCreateFile, canOwn, preFinish) => {
-        
-        
+
+
         var fullname = name ? PATH_FS.resolve(PATH.join2(parent, name)) : parent;
-        var dep = getUniqueRunDependency('cp ' + fullname); 
+        var dep = getUniqueRunDependency('cp ' + fullname);
         function processData(byteArray) {
           function finish(byteArray) {
             if (preFinish) preFinish();
@@ -3086,7 +3086,7 @@ var ASM_CONSTS = {
         } catch (e) {
           return onerror(e);
         }
-        openRequest.onupgradeneeded = onerror; 
+        openRequest.onupgradeneeded = onerror;
         openRequest.onsuccess = () => {
           var db = openRequest.result;
           try {
@@ -3120,7 +3120,7 @@ var ASM_CONSTS = {
         if (PATH.isAbs(path)) {
           return path;
         }
-        
+
         var dir;
         if (dirfd === -100) {
           dir = FS.cwd();
@@ -3140,7 +3140,7 @@ var ASM_CONSTS = {
           var stat = func(path);
         } catch (e) {
           if (e && e.node && PATH.normalize(path) !== PATH.normalize(FS.getPath(e.node))) {
-            
+
             return -54;
           }
           throw e;
@@ -3171,7 +3171,7 @@ var ASM_CONSTS = {
           throw new FS.ErrnoError(43);
         }
         if (flags & 2) {
-          
+
           return 0;
         }
         var buffer = HEAPU8.slice(addr, addr + len);
@@ -3190,7 +3190,7 @@ var ASM_CONSTS = {
       }};
   function ___syscall_chmod(path, mode) {
   try {
-  
+
       path = SYSCALLS.getStr(path);
       FS.chmod(path, mode);
       return 0;
@@ -3202,11 +3202,11 @@ var ASM_CONSTS = {
 
   function ___syscall_faccessat(dirfd, path, amode, flags) {
   try {
-  
+
       path = SYSCALLS.getStr(path);
       path = SYSCALLS.calculateAt(dirfd, path);
       if (amode & ~7) {
-        
+
         return -28;
       }
       var lookup = FS.lookupPath(path, { follow: true });
@@ -3230,7 +3230,7 @@ var ASM_CONSTS = {
 
   function ___syscall_fchmod(fd, mode) {
   try {
-  
+
       FS.fchmod(fd, mode);
       return 0;
     } catch (e) {
@@ -3241,7 +3241,7 @@ var ASM_CONSTS = {
 
   function ___syscall_fchown32(fd, owner, group) {
   try {
-  
+
       FS.fchown(fd, owner, group);
       return 0;
     } catch (e) {
@@ -3254,11 +3254,11 @@ var ASM_CONSTS = {
       HEAP32[((___errno_location())>>2)] = value;
       return value;
     }
-  
+
   function ___syscall_fcntl64(fd, cmd, varargs) {
   SYSCALLS.varargs = varargs;
   try {
-  
+
       var stream = SYSCALLS.getStreamFromFD(fd);
       switch (cmd) {
         case 0: {
@@ -3272,7 +3272,7 @@ var ASM_CONSTS = {
         }
         case 1:
         case 2:
-          return 0;  
+          return 0;
         case 3:
           return stream.flags;
         case 4: {
@@ -3282,25 +3282,25 @@ var ASM_CONSTS = {
         }
         case 5:
          {
-          
+
           var arg = SYSCALLS.get();
           var offset = 0;
-          
+
           HEAP16[(((arg)+(offset))>>1)] = 2;
           return 0;
         }
         case 6:
         case 7:
-        
-        
-          
-          
-          return 0; 
+
+
+
+
+          return 0;
         case 16:
         case 8:
-          return -28; 
+          return -28;
         case 9:
-          
+
           setErrNo(28);
           return -1;
         default: {
@@ -3315,7 +3315,7 @@ var ASM_CONSTS = {
 
   function ___syscall_fstat64(fd, buf) {
   try {
-  
+
       var stream = SYSCALLS.getStreamFromFD(fd);
       return SYSCALLS.doStat(FS.stat, stream.path, buf);
     } catch (e) {
@@ -3325,18 +3325,18 @@ var ASM_CONSTS = {
   }
 
   var MAX_INT53 = 9007199254740992;
-  
+
   var MIN_INT53 = -9007199254740992;
   function bigintToI53Checked(num) {
       return (num < MIN_INT53 || num > MAX_INT53) ? NaN : Number(num);
     }
-  
-  
-  
-  
+
+
+
+
   function ___syscall_ftruncate64(fd,  length) {
   try {
-  
+
       length = bigintToI53Checked(length); if (isNaN(length)) return -61;
       FS.ftruncate(fd, length);
       return 0;
@@ -3348,7 +3348,7 @@ var ASM_CONSTS = {
 
   function ___syscall_getcwd(buf, size) {
   try {
-  
+
       if (size === 0) return -28;
       var cwd = FS.cwd();
       var cwdLengthInBytes = lengthBytesUTF8(cwd) + 1;
@@ -3364,7 +3364,7 @@ var ASM_CONSTS = {
   function ___syscall_ioctl(fd, op, varargs) {
   SYSCALLS.varargs = varargs;
   try {
-  
+
       var stream = SYSCALLS.getStreamFromFD(fd);
       switch (op) {
         case 21509:
@@ -3379,7 +3379,7 @@ var ASM_CONSTS = {
         case 21507:
         case 21508: {
           if (!stream.tty) return -59;
-          return 0; 
+          return 0;
         }
         case 21519: {
           if (!stream.tty) return -59;
@@ -3389,26 +3389,26 @@ var ASM_CONSTS = {
         }
         case 21520: {
           if (!stream.tty) return -59;
-          return -28; 
+          return -28;
         }
         case 21531: {
           var argp = SYSCALLS.get();
           return FS.ioctl(stream, op, argp);
         }
         case 21523: {
-          
-          
+
+
           if (!stream.tty) return -59;
           return 0;
         }
         case 21524: {
-          
-          
-          
+
+
+
           if (!stream.tty) return -59;
           return 0;
         }
-        default: return -28; 
+        default: return -28;
       }
     } catch (e) {
     if (typeof FS == 'undefined' || !(e instanceof FS.ErrnoError)) throw e;
@@ -3418,7 +3418,7 @@ var ASM_CONSTS = {
 
   function ___syscall_lstat64(path, buf) {
   try {
-  
+
       path = SYSCALLS.getStr(path);
       return SYSCALLS.doStat(FS.lstat, path, buf);
     } catch (e) {
@@ -3429,11 +3429,11 @@ var ASM_CONSTS = {
 
   function ___syscall_mkdirat(dirfd, path, mode) {
   try {
-  
+
       path = SYSCALLS.getStr(path);
       path = SYSCALLS.calculateAt(dirfd, path);
-      
-      
+
+
       path = PATH.normalize(path);
       if (path[path.length-1] === '/') path = path.substr(0, path.length-1);
       FS.mkdir(path, mode, 0);
@@ -3446,7 +3446,7 @@ var ASM_CONSTS = {
 
   function ___syscall_newfstatat(dirfd, path, buf, flags) {
   try {
-  
+
       path = SYSCALLS.getStr(path);
       var nofollow = flags & 256;
       var allowEmpty = flags & 4096;
@@ -3462,7 +3462,7 @@ var ASM_CONSTS = {
   function ___syscall_openat(dirfd, path, flags, varargs) {
   SYSCALLS.varargs = varargs;
   try {
-  
+
       path = SYSCALLS.getStr(path);
       path = SYSCALLS.calculateAt(dirfd, path);
       var mode = varargs ? SYSCALLS.get() : 0;
@@ -3475,17 +3475,17 @@ var ASM_CONSTS = {
 
   function ___syscall_readlinkat(dirfd, path, buf, bufsize) {
   try {
-  
+
       path = SYSCALLS.getStr(path);
       path = SYSCALLS.calculateAt(dirfd, path);
       if (bufsize <= 0) return -28;
       var ret = FS.readlink(path);
-  
+
       var len = Math.min(bufsize, lengthBytesUTF8(ret));
       var endChar = HEAP8[buf+len];
       stringToUTF8(ret, buf, bufsize+1);
-      
-      
+
+
       HEAP8[buf+len] = endChar;
       return len;
     } catch (e) {
@@ -3496,7 +3496,7 @@ var ASM_CONSTS = {
 
   function ___syscall_rmdir(path) {
   try {
-  
+
       path = SYSCALLS.getStr(path);
       FS.rmdir(path);
       return 0;
@@ -3508,7 +3508,7 @@ var ASM_CONSTS = {
 
   function ___syscall_stat64(path, buf) {
   try {
-  
+
       path = SYSCALLS.getStr(path);
       return SYSCALLS.doStat(FS.stat, path, buf);
     } catch (e) {
@@ -3519,7 +3519,7 @@ var ASM_CONSTS = {
 
   function ___syscall_unlinkat(dirfd, path, flags) {
   try {
-  
+
       path = SYSCALLS.getStr(path);
       path = SYSCALLS.calculateAt(dirfd, path);
       if (flags === 0) {
@@ -3539,10 +3539,10 @@ var ASM_CONSTS = {
   function readI53FromI64(ptr) {
       return HEAPU32[ptr>>2] + HEAP32[ptr+4>>2] * 4294967296;
     }
-  
+
   function ___syscall_utimensat(dirfd, path, times, flags) {
   try {
-  
+
       path = SYSCALLS.getStr(path);
       path = SYSCALLS.calculateAt(dirfd, path, true);
       if (!times) {
@@ -3570,19 +3570,19 @@ var ASM_CONSTS = {
       return nowIsMonotonic;
     }
 
-  
+
   function __isLeapYear(year) {
         return year%4 === 0 && (year%100 !== 0 || year%400 === 0);
     }
-  
+
   var __MONTH_DAYS_LEAP_CUMULATIVE = [0,31,60,91,121,152,182,213,244,274,305,335];
-  
+
   var __MONTH_DAYS_REGULAR_CUMULATIVE = [0,31,59,90,120,151,181,212,243,273,304,334];
   function __yday_from_date(date) {
       var isLeapYear = __isLeapYear(date.getFullYear());
       var monthDaysCumulative = (isLeapYear ? __MONTH_DAYS_LEAP_CUMULATIVE : __MONTH_DAYS_REGULAR_CUMULATIVE);
-      var yday = monthDaysCumulative[date.getMonth()] + date.getDate() - 1; 
-  
+      var yday = monthDaysCumulative[date.getMonth()] + date.getDate() - 1;
+
       return yday;
     }
   function __localtime_js(time, tmPtr) {
@@ -3594,12 +3594,12 @@ var ASM_CONSTS = {
       HEAP32[(((tmPtr)+(16))>>2)] = date.getMonth();
       HEAP32[(((tmPtr)+(20))>>2)] = date.getFullYear()-1900;
       HEAP32[(((tmPtr)+(24))>>2)] = date.getDay();
-  
+
       var yday = __yday_from_date(date)|0;
       HEAP32[(((tmPtr)+(28))>>2)] = yday;
       HEAP32[(((tmPtr)+(36))>>2)] = -(date.getTimezoneOffset() * 60);
-  
-      
+
+
       var start = new Date(date.getFullYear(), 0, 1);
       var summerOffset = new Date(date.getFullYear(), 6, 1).getTimezoneOffset();
       var winterOffset = start.getTimezoneOffset();
@@ -3607,11 +3607,11 @@ var ASM_CONSTS = {
       HEAP32[(((tmPtr)+(32))>>2)] = dst;
     }
 
-  
-  
+
+
   function __mmap_js(len, prot, flags, fd, off, allocated, addr) {
   try {
-  
+
       var stream = SYSCALLS.getStreamFromFD(fd);
       var res = FS.mmap(stream, len, off, prot, flags);
       var ptr = res.ptr;
@@ -3624,17 +3624,17 @@ var ASM_CONSTS = {
   }
   }
 
-  
-  
+
+
   function __munmap_js(addr, len, prot, flags, fd, offset) {
   try {
-  
+
       var stream = SYSCALLS.getStreamFromFD(fd);
       if (prot & 2) {
         SYSCALLS.doMsync(addr, stream, len, flags, offset);
       }
       FS.munmap(stream);
-      
+
     } catch (e) {
     if (typeof FS == 'undefined' || !(e instanceof FS.ErrnoError)) throw e;
     return -e.errno;
@@ -3648,27 +3648,27 @@ var ASM_CONSTS = {
       return ret;
     }
   function __tzset_js(timezone, daylight, tzname) {
-      
+
       var currentYear = new Date().getFullYear();
       var winter = new Date(currentYear, 0, 1);
       var summer = new Date(currentYear, 6, 1);
       var winterOffset = winter.getTimezoneOffset();
       var summerOffset = summer.getTimezoneOffset();
-  
-      
-      
-      
+
+
+
+
       var stdTimezoneOffset = Math.max(winterOffset, summerOffset);
-  
-      
-      
-      
-      
-      
+
+
+
+
+
+
       HEAPU32[((timezone)>>2)] = stdTimezoneOffset * 60;
-  
+
       HEAP32[((daylight)>>2)] = Number(winterOffset != summerOffset);
-  
+
       function extractZone(date) {
         var match = date.toTimeString().match(/\(([A-Za-z ]+)\)$/);
         return match ? match[1] : "GMT";
@@ -3678,7 +3678,7 @@ var ASM_CONSTS = {
       var winterNamePtr = allocateUTF8(winterName);
       var summerNamePtr = allocateUTF8(summerName);
       if (summerOffset < winterOffset) {
-        
+
         HEAPU32[((tzname)>>2)] = winterNamePtr;
         HEAPU32[(((tzname)+(4))>>2)] = summerNamePtr;
       } else {
@@ -3700,70 +3700,70 @@ var ASM_CONSTS = {
   ;
 
   function getHeapMax() {
-      
-      
-      
-      
+
+
+
+
       return 2147483648;
     }
-  
+
   function emscripten_realloc_buffer(size) {
       var b = wasmMemory.buffer;
       try {
-        
-        wasmMemory.grow((size - b.byteLength + 65535) >>> 16); 
+
+        wasmMemory.grow((size - b.byteLength + 65535) >>> 16);
         updateMemoryViews();
         return 1 ;
       } catch(e) {
       }
-      
-      
+
+
     }
   function _emscripten_resize_heap(requestedSize) {
       var oldSize = HEAPU8.length;
       requestedSize = requestedSize >>> 0;
-      
-      
-  
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-  
-      
-      
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
       var maxHeapSize = getHeapMax();
       if (requestedSize > maxHeapSize) {
         return false;
       }
-  
+
       let alignUp = (x, multiple) => x + (multiple - x % multiple) % multiple;
-  
-      
-      
-      
+
+
+
+
       for (var cutDown = 1; cutDown <= 4; cutDown *= 2) {
-        var overGrownHeapSize = oldSize * (1 + 0.2 / cutDown); 
-        
+        var overGrownHeapSize = oldSize * (1 + 0.2 / cutDown);
+
         overGrownHeapSize = Math.min(overGrownHeapSize, requestedSize + 100663296 );
-  
+
         var newSize = Math.min(maxHeapSize, alignUp(Math.max(requestedSize, overGrownHeapSize), 65536));
-  
+
         var replacement = emscripten_realloc_buffer(newSize);
         if (replacement) {
-  
+
           return true;
         }
       }
@@ -3771,14 +3771,14 @@ var ASM_CONSTS = {
     }
 
   var ENV = {};
-  
+
   function getExecutableName() {
       return thisProgram || './this.program';
     }
   function getEnvStrings() {
       if (!getEnvStrings.strings) {
-        
-        
+
+
         var lang = ((typeof navigator == 'object' && navigator.languages && navigator.languages[0]) || 'C').replace('-', '_') + '.UTF-8';
         var env = {
           'USER': 'web_user',
@@ -3789,11 +3789,11 @@ var ASM_CONSTS = {
           'LANG': lang,
           '_': getExecutableName()
         };
-        
+
         for (var x in ENV) {
-          
-          
-          
+
+
+
           if (ENV[x] === undefined) delete env[x];
           else env[x] = ENV[x];
         }
@@ -3805,16 +3805,16 @@ var ASM_CONSTS = {
       }
       return getEnvStrings.strings;
     }
-  
-  
+
+
   function writeAsciiToMemory(str, buffer, dontAddNull) {
       for (var i = 0; i < str.length; ++i) {
         HEAP8[((buffer++)>>0)] = str.charCodeAt(i);
       }
-      
+
       if (!dontAddNull) HEAP8[((buffer)>>0)] = 0;
     }
-  
+
   function _environ_get(__environ, environ_buf) {
       var bufSize = 0;
       getEnvStrings().forEach(function(string, i) {
@@ -3826,7 +3826,7 @@ var ASM_CONSTS = {
       return 0;
     }
 
-  
+
   function _environ_sizes_get(penviron_count, penviron_buf_size) {
       var strings = getEnvStrings();
       HEAPU32[((penviron_count)>>2)] = strings.length;
@@ -3840,7 +3840,7 @@ var ASM_CONSTS = {
 
   function _fd_close(fd) {
   try {
-  
+
       var stream = SYSCALLS.getStreamFromFD(fd);
       FS.close(stream);
       return 0;
@@ -3852,18 +3852,18 @@ var ASM_CONSTS = {
 
   function _fd_fdstat_get(fd, pbuf) {
   try {
-  
+
       var stream = SYSCALLS.getStreamFromFD(fd);
-      
-      
+
+
       var type = stream.tty ? 2 :
                  FS.isDir(stream.mode) ? 3 :
                  FS.isLink(stream.mode) ? 7 :
                  4;
       HEAP8[((pbuf)>>0)] = type;
-      
-      
-      
+
+
+
       return 0;
     } catch (e) {
     if (typeof FS == 'undefined' || !(e instanceof FS.ErrnoError)) throw e;
@@ -3871,7 +3871,7 @@ var ASM_CONSTS = {
   }
   }
 
-  
+
   function doReadv(stream, iov, iovcnt, offset) {
       var ret = 0;
       for (var i = 0; i < iovcnt; i++) {
@@ -3881,17 +3881,17 @@ var ASM_CONSTS = {
         var curr = FS.read(stream, HEAP8,ptr, len, offset);
         if (curr < 0) return -1;
         ret += curr;
-        if (curr < len) break; 
+        if (curr < len) break;
         if (typeof offset !== 'undefined') {
           offset += curr;
         }
       }
       return ret;
     }
-  
+
   function _fd_read(fd, iov, iovcnt, pnum) {
   try {
-  
+
       var stream = SYSCALLS.getStreamFromFD(fd);
       var num = doReadv(stream, iov, iovcnt);
       HEAPU32[((pnum)>>2)] = num;
@@ -3902,18 +3902,18 @@ var ASM_CONSTS = {
   }
   }
 
-  
-  
-  
-  
+
+
+
+
   function _fd_seek(fd,  offset, whence, newOffset) {
   try {
-  
+
       offset = bigintToI53Checked(offset); if (isNaN(offset)) return 61;
       var stream = SYSCALLS.getStreamFromFD(fd);
       FS.llseek(stream, offset, whence);
       (tempI64 = [stream.position>>>0,(tempDouble=stream.position,(+(Math.abs(tempDouble))) >= 1.0 ? (tempDouble > 0.0 ? ((Math.min((+(Math.floor((tempDouble)/4294967296.0))), 4294967295.0))|0)>>>0 : (~~((+(Math.ceil((tempDouble - +(((~~(tempDouble)))>>>0))/4294967296.0)))))>>>0) : 0)],HEAP32[((newOffset)>>2)] = tempI64[0],HEAP32[(((newOffset)+(4))>>2)] = tempI64[1]);
-      if (stream.getdents && offset === 0 && whence === 0) stream.getdents = null; 
+      if (stream.getdents && offset === 0 && whence === 0) stream.getdents = null;
       return 0;
     } catch (e) {
     if (typeof FS == 'undefined' || !(e instanceof FS.ErrnoError)) throw e;
@@ -3923,19 +3923,19 @@ var ASM_CONSTS = {
 
   function _fd_sync(fd) {
   try {
-  
+
       var stream = SYSCALLS.getStreamFromFD(fd);
       if (stream.stream_ops && stream.stream_ops.fsync) {
         return stream.stream_ops.fsync(stream);
       }
-      return 0; 
+      return 0;
     } catch (e) {
     if (typeof FS == 'undefined' || !(e instanceof FS.ErrnoError)) throw e;
     return e.errno;
   }
   }
 
-  
+
   function doWritev(stream, iov, iovcnt, offset) {
       var ret = 0;
       for (var i = 0; i < iovcnt; i++) {
@@ -3951,10 +3951,10 @@ var ASM_CONSTS = {
       }
       return ret;
     }
-  
+
   function _fd_write(fd, iov, iovcnt, pnum) {
   try {
-  
+
       var stream = SYSCALLS.getStreamFromFD(fd);
       var num = doWritev(stream, iov, iovcnt);
       HEAPU32[((pnum)>>2)] = num;
@@ -3967,7 +3967,7 @@ var ASM_CONSTS = {
 
   var FSNode =  function(parent, name, mode, rdev) {
     if (!parent) {
-      parent = this;  
+      parent = this;
     }
     this.parent = parent;
     this.mount = parent.mount;
@@ -5273,9 +5273,9 @@ Module["wasmMemory"] = wasmMemory;
 var calledRun;
 
 dependenciesFulfilled = function runCaller() {
-  
+
   if (!calledRun) run();
-  if (!calledRun) dependenciesFulfilled = runCaller; 
+  if (!calledRun) dependenciesFulfilled = runCaller;
 };
 
 
@@ -5288,14 +5288,14 @@ function run(args) {
 
   preRun();
 
-  
+
   if (runDependencies > 0) {
     return;
   }
 
   function doRun() {
-    
-    
+
+
     if (calledRun) return;
     calledRun = true;
     Module['calledRun'] = true;
@@ -5340,7 +5340,7 @@ run();
 if(!Module.postRun) Module.postRun = [];
 Module.postRun.push(function(Module){
   'use strict';
-  
+
 
 
 
@@ -5355,7 +5355,7 @@ Module.postRun.push(function(Module){
 globalThis.sqlite3ApiBootstrap = function sqlite3ApiBootstrap(
   apiConfig = (globalThis.sqlite3ApiConfig || sqlite3ApiBootstrap.defaultConfig)
 ){
-  if(sqlite3ApiBootstrap.sqlite3){ 
+  if(sqlite3ApiBootstrap.sqlite3){
     console.warn("sqlite3ApiBootstrap() called multiple times.",
                  "Config and external initializers are ignored on calls after the first.");
     return sqlite3ApiBootstrap.sqlite3;
@@ -5365,7 +5365,7 @@ globalThis.sqlite3ApiBootstrap = function sqlite3ApiBootstrap(
     memory: undefined,
     bigIntEnabled: (()=>{
       if('undefined'!==typeof Module){
-        
+
         return !!Module.HEAPU64;
       }
       return !!globalThis.BigInt64Array;
@@ -5375,7 +5375,7 @@ globalThis.sqlite3ApiBootstrap = function sqlite3ApiBootstrap(
     error: console.error.bind(console),
     log: console.log.bind(console),
     wasmfsOpfsDir: '/opfs',
-    
+
     useStdAlloc: false
   }, apiConfig || {});
 
@@ -5386,31 +5386,31 @@ globalThis.sqlite3ApiBootstrap = function sqlite3ApiBootstrap(
   }, config);
 
   [
-    
-    
+
+
     'exports', 'memory', 'wasmfsOpfsDir'
   ].forEach((k)=>{
     if('function' === typeof config[k]){
       config[k] = config[k]();
     }
   });
-  
+
   const capi = Object.create(null);
-  
+
   const wasm = Object.create(null);
 
-  
+
   const __rcStr = (rc)=>{
     return (capi.sqlite3_js_rc_str && capi.sqlite3_js_rc_str(rc))
            || ("Unknown result code #"+rc);
   };
 
-  
+
   const __isInt = (n)=>'number'===typeof n && n===(n | 0);
 
-  
+
   class SQLite3Error extends Error {
-    
+
     constructor(...args){
       let rc;
       if(args.length){
@@ -5440,7 +5440,7 @@ globalThis.sqlite3ApiBootstrap = function sqlite3ApiBootstrap(
     }
   };
 
-  
+
   SQLite3Error.toss = (...args)=>{
     throw new SQLite3Error(...args);
   };
@@ -5450,12 +5450,12 @@ globalThis.sqlite3ApiBootstrap = function sqlite3ApiBootstrap(
     toss3("config.wasmfsOpfsDir must be falsy or in the form '/dir-name'.");
   }
 
-  
+
   const isInt32 = (n)=>{
     return ('bigint'!==typeof n )
       && !!(n===(n|0) && n<=2147483647 && n>=-2147483648);
   };
-  
+
   const bigIntFits64 = function f(b){
     if(!f._max){
       f._max = BigInt("0x7fffffffffffffff");
@@ -5464,10 +5464,10 @@ globalThis.sqlite3ApiBootstrap = function sqlite3ApiBootstrap(
     return b >= f._min && b <= f._max;
   };
 
-  
+
   const bigIntFits32 = (b)=>(b >= (-0x7fffffffn - 1n) && b <= 0x7fffffffn);
 
-  
+
   const bigIntFitsDouble = function f(b){
     if(!f._min){
       f._min = Number.MIN_SAFE_INTEGER;
@@ -5476,40 +5476,40 @@ globalThis.sqlite3ApiBootstrap = function sqlite3ApiBootstrap(
     return b >= f._min && b <= f._max;
   };
 
-  
+
   const isTypedArray = (v)=>{
     return (v && v.constructor && isInt32(v.constructor.BYTES_PER_ELEMENT)) ? v : false;
   };
 
 
-  
+
   const __SAB = ('undefined'===typeof SharedArrayBuffer)
         ? function(){} : SharedArrayBuffer;
-  
+
   const isSharedTypedArray = (aTypedArray)=>(aTypedArray.buffer instanceof __SAB);
 
-  
+
   const typedArrayPart = (aTypedArray, begin, end)=>{
     return isSharedTypedArray(aTypedArray)
       ? aTypedArray.slice(begin, end)
       : aTypedArray.subarray(begin, end);
   };
 
-  
+
   const isBindableTypedArray = (v)=>{
     return v && (v instanceof Uint8Array
                  || v instanceof Int8Array
                  || v instanceof ArrayBuffer);
   };
 
-  
+
   const isSQLableTypedArray = (v)=>{
     return v && (v instanceof Uint8Array
                  || v instanceof Int8Array
                  || v instanceof ArrayBuffer);
   };
 
-  
+
   const affirmBindableTypedArray = (v)=>{
     return isBindableTypedArray(v)
       || toss3("Value is not of a supported TypedArray type.");
@@ -5517,12 +5517,12 @@ globalThis.sqlite3ApiBootstrap = function sqlite3ApiBootstrap(
 
   const utf8Decoder = new TextDecoder('utf-8');
 
-  
+
   const typedArrayToString = function(typedArray, begin, end){
     return utf8Decoder.decode(typedArrayPart(typedArray, begin,end));
   };
 
-  
+
   const flexibleString = function(v){
     if(isSQLableTypedArray(v)){
       return typedArrayToString(
@@ -5534,9 +5534,9 @@ globalThis.sqlite3ApiBootstrap = function sqlite3ApiBootstrap(
     return v;
   };
 
-  
+
   class WasmAllocError extends Error {
-    
+
     constructor(...args){
       if(2===args.length && 'object'===typeof args[1]){
         super(...args);
@@ -5549,49 +5549,49 @@ globalThis.sqlite3ApiBootstrap = function sqlite3ApiBootstrap(
       this.name = 'WasmAllocError';
     }
   };
-  
+
   WasmAllocError.toss = (...args)=>{
     throw new WasmAllocError(...args);
   };
 
   Object.assign(capi, {
-    
+
     sqlite3_bind_blob: undefined,
 
-    
+
     sqlite3_bind_text: undefined,
 
-    
+
     sqlite3_create_function_v2: (
       pDb, funcName, nArg, eTextRep, pApp,
       xFunc, xStep, xFinal, xDestroy
     )=>{},
-    
+
     sqlite3_create_function: (
       pDb, funcName, nArg, eTextRep, pApp,
       xFunc, xStep, xFinal
     )=>{},
-    
+
     sqlite3_create_window_function: (
       pDb, funcName, nArg, eTextRep, pApp,
       xStep, xFinal, xValue, xInverse, xDestroy
     )=>{},
-    
+
     sqlite3_prepare_v3: (dbPtr, sql, sqlByteLen, prepFlags,
                          stmtPtrPtr, strPtrPtr)=>{},
 
-    
+
     sqlite3_prepare_v2: (dbPtr, sql, sqlByteLen,
                          stmtPtrPtr,strPtrPtr)=>{},
 
-    
+
     sqlite3_exec: (pDb, sql, callback, pVoid, pErrMsg)=>{},
 
-    
+
     sqlite3_randomness: (n, outPtr)=>{},
   });
 
-  
+
   const util = {
     affirmBindableTypedArray, flexibleString,
     bigIntFits32, bigIntFits64, bigIntFitsDouble,
@@ -5599,7 +5599,7 @@ globalThis.sqlite3ApiBootstrap = function sqlite3ApiBootstrap(
     isInt32, isSQLableTypedArray, isTypedArray,
     typedArrayToString,
     isUIThread: ()=>(globalThis.window===globalThis && !!globalThis.document),
-    
+
     isSharedTypedArray,
     toss: function(...args){throw new Error(args.join(' '))},
     toss3,
@@ -5607,35 +5607,35 @@ globalThis.sqlite3ApiBootstrap = function sqlite3ApiBootstrap(
   };
 
   Object.assign(wasm, {
-    
+
     ptrSizeof: config.wasmPtrSizeof || 4,
-    
+
     ptrIR: config.wasmPtrIR || "i32",
-    
+
     bigIntEnabled: !!config.bigIntEnabled,
-    
+
     exports: config.exports
       || toss3("Missing API config.exports (WASM module exports)."),
 
-    
+
     memory: config.memory || config.exports['memory']
       || toss3("API config object requires a WebAssembly.Memory object",
               "in either config.exports.memory (exported)",
               "or config.memory (imported)."),
 
-    
+
     alloc: undefined,
 
-    
+
     realloc: undefined,
 
-    
+
     dealloc: undefined
 
-    
+
   });
 
-  
+
   wasm.allocFromTypedArray = function(srcTypedArray){
     if(srcTypedArray instanceof ArrayBuffer){
       srcTypedArray = new Uint8Array(srcTypedArray);
@@ -5649,7 +5649,7 @@ globalThis.sqlite3ApiBootstrap = function sqlite3ApiBootstrap(
   };
 
   {
-    
+
     const keyAlloc = config.allocExportName,
           keyDealloc = config.deallocExportName,
           keyRealloc = config.reallocExportName;
@@ -5670,7 +5670,7 @@ globalThis.sqlite3ApiBootstrap = function sqlite3ApiBootstrap(
     wasm.dealloc = wasm.exports[keyDealloc];
   }
 
-  
+
   wasm.compileOptionUsed = function f(optName){
     if(!arguments.length){
       if(f._result) return f._result;
@@ -5707,11 +5707,11 @@ globalThis.sqlite3ApiBootstrap = function sqlite3ApiBootstrap(
     ) ? !!capi.sqlite3_compileoption_used(optName) : false;
   };
 
-  
+
   wasm.pstack = Object.assign(Object.create(null),{
-    
+
     restore: wasm.exports.sqlite3_wasm_pstack_restore,
-    
+
     alloc: function(n){
       if('string'===typeof n && !(n = wasm.sizeofIR(n))){
         WasmAllocError.toss("Invalid value for pstack.alloc(",arguments[0],")");
@@ -5720,7 +5720,7 @@ globalThis.sqlite3ApiBootstrap = function sqlite3ApiBootstrap(
         || WasmAllocError.toss("Could not allocate",n,
                                "bytes from the pstack.");
     },
-    
+
     allocChunks: function(n,sz){
       if('string'===typeof sz && !(sz = wasm.sizeofIR(sz))){
         WasmAllocError.toss("Invalid size value for allocChunks(",arguments[1],")");
@@ -5731,7 +5731,7 @@ globalThis.sqlite3ApiBootstrap = function sqlite3ApiBootstrap(
       for(; i < n; ++i, offset += sz) rc.push(mem + offset);
       return rc;
     },
-    
+
     allocPtr: (n=1,safePtrSize=true)=>{
       return 1===n
         ? wasm.pstack.alloc(safePtrSize ? 8 : wasm.ptrSizeof)
@@ -5739,20 +5739,20 @@ globalThis.sqlite3ApiBootstrap = function sqlite3ApiBootstrap(
     }
   });
   Object.defineProperties(wasm.pstack, {
-    
+
     pointer: {
       configurable: false, iterable: true, writeable: false,
       get: wasm.exports.sqlite3_wasm_pstack_ptr
-      
-      
-      
+
+
+
     },
-    
+
     quota: {
       configurable: false, iterable: true, writeable: false,
       get: wasm.exports.sqlite3_wasm_pstack_quota
     },
-    
+
     remaining: {
       configurable: false, iterable: true, writeable: false,
       get: wasm.exports.sqlite3_wasm_pstack_remaining
@@ -5792,12 +5792,12 @@ globalThis.sqlite3ApiBootstrap = function sqlite3ApiBootstrap(
     wasm.exports.sqlite3_randomness(...args);
   };
 
-  
+
   let __wasmfsOpfsDir = undefined;
-  
+
   capi.sqlite3_wasmfs_opfs_dir = function(){
     if(undefined !== __wasmfsOpfsDir) return __wasmfsOpfsDir;
-    
+
     const pdir = config.wasmfsOpfsDir;
     if(!pdir
        || !globalThis.FileSystemHandle
@@ -5814,18 +5814,18 @@ globalThis.sqlite3ApiBootstrap = function sqlite3ApiBootstrap(
         return __wasmfsOpfsDir = "";
       }
     }catch(e){
-      
+
       return __wasmfsOpfsDir = "";
     }
   };
 
-  
+
   capi.sqlite3_wasmfs_filename_is_persistent = function(name){
     const p = capi.sqlite3_wasmfs_opfs_dir();
     return (p && name) ? name.startsWith(p+'/') : false;
   };
 
-  
+
   capi.sqlite3_js_db_uses_vfs = function(pDb,vfsName,dbName=0){
     try{
       const pK = capi.sqlite3_vfs_find(vfsName);
@@ -5836,12 +5836,12 @@ globalThis.sqlite3ApiBootstrap = function sqlite3ApiBootstrap(
         return pK===capi.sqlite3_js_db_vfs(pDb,dbName) ? pK : false;
       }
     }catch(e){
-      
+
       return false;
     }
   };
 
-  
+
   capi.sqlite3_js_vfs_list = function(){
     const rc = [];
     let pVfs = capi.sqlite3_vfs_find(0);
@@ -5854,7 +5854,7 @@ globalThis.sqlite3ApiBootstrap = function sqlite3ApiBootstrap(
     return rc;
   };
 
-  
+
   capi.sqlite3_js_db_export = function(pDb, schema=0){
     pDb = wasm.xWrap.testConvertArg('sqlite3*', pDb);
     if(!pDb) toss3('Invalid sqlite3* argument.');
@@ -5864,7 +5864,7 @@ globalThis.sqlite3ApiBootstrap = function sqlite3ApiBootstrap(
     try{
       const pSize = wasm.scopedAlloc(8 + wasm.ptrSizeof);
       const ppOut = pSize + 8;
-      
+
       const zSchema = schema
             ? (wasm.isPtr(schema) ? schema : wasm.scopedAllocCString(''+schema))
             : 0;
@@ -5887,11 +5887,11 @@ globalThis.sqlite3ApiBootstrap = function sqlite3ApiBootstrap(
     }
   };
 
-  
+
   capi.sqlite3_js_db_vfs =
     (dbPointer, dbName=0)=>wasm.sqlite3_wasm_db_vfs(dbPointer, dbName);
 
-  
+
   capi.sqlite3_js_aggregate_context = (pCtx, n)=>{
     return capi.sqlite3_aggregate_context(pCtx, n)
       || (n ? WasmAllocError.toss("Cannot allocate",n,
@@ -5899,7 +5899,7 @@ globalThis.sqlite3ApiBootstrap = function sqlite3ApiBootstrap(
           : 0);
   };
 
-  
+
   capi.sqlite3_js_posix_create_file = function(filename, data, dataLen){
     let pData;
     if(data && wasm.isPtr(data)){
@@ -5924,7 +5924,7 @@ globalThis.sqlite3ApiBootstrap = function sqlite3ApiBootstrap(
     }
   };
 
-  
+
   capi.sqlite3_js_vfs_create_file = function(vfs, filename, data, dataLen){
     config.warn("sqlite3_js_vfs_create_file() is deprecated and",
                 "should be avoided because it can lead to C-level crashes.",
@@ -5961,9 +5961,9 @@ globalThis.sqlite3ApiBootstrap = function sqlite3ApiBootstrap(
   };
 
   if( util.isUIThread() ){
-    
 
-    
+
+
     const __kvvfsInfo = function(which){
       const rc = Object.create(null);
       rc.prefix = 'kvvfs-'+which;
@@ -5973,7 +5973,7 @@ globalThis.sqlite3ApiBootstrap = function sqlite3ApiBootstrap(
       return rc;
     };
 
-    
+
     capi.sqlite3_js_kvvfs_clear = function(which=""){
       let rc = 0;
       const kvinfo = __kvvfsInfo(which);
@@ -5990,7 +5990,7 @@ globalThis.sqlite3ApiBootstrap = function sqlite3ApiBootstrap(
       return rc;
     };
 
-    
+
     capi.sqlite3_js_kvvfs_size = function(which=""){
       let sz = 0;
       const kvinfo = __kvvfsInfo(which);
@@ -6009,7 +6009,7 @@ globalThis.sqlite3ApiBootstrap = function sqlite3ApiBootstrap(
 
   }
 
-  
+
   capi.sqlite3_db_config = function(pDb, op, ...args){
     if(!this.s){
       this.s = wasm.xWrap('sqlite3_wasm_db_config_s','int',
@@ -6049,7 +6049,7 @@ globalThis.sqlite3ApiBootstrap = function sqlite3ApiBootstrap(
     }
   }.bind(Object.create(null));
 
-  
+
   capi.sqlite3_value_to_js = function(pVal,throwIfCannotConvert=true){
     let arg;
     const valType = capi.sqlite3_value_type(pVal);
@@ -6088,12 +6088,12 @@ globalThis.sqlite3ApiBootstrap = function sqlite3ApiBootstrap(
     return arg;
   };
 
-  
+
   capi.sqlite3_values_to_js = function(argc,pArgv,throwIfCannotConvert=true){
     let i;
     const tgt = [];
     for(i = 0; i < argc; ++i){
-      
+
       tgt.push(capi.sqlite3_value_to_js(
         wasm.peekPtr(pArgv + (wasm.ptrSizeof * i)),
         throwIfCannotConvert
@@ -6102,7 +6102,7 @@ globalThis.sqlite3ApiBootstrap = function sqlite3ApiBootstrap(
     return tgt;
   };
 
-  
+
   capi.sqlite3_result_error_js = function(pCtx,e){
     if(e instanceof WasmAllocError){
       capi.sqlite3_result_error_nomem(pCtx);
@@ -6112,7 +6112,7 @@ globalThis.sqlite3ApiBootstrap = function sqlite3ApiBootstrap(
     }
   };
 
-  
+
   capi.sqlite3_result_js = function(pCtx,val){
     if(val instanceof Error){
       capi.sqlite3_result_error_js(pCtx, val);
@@ -6121,7 +6121,7 @@ globalThis.sqlite3ApiBootstrap = function sqlite3ApiBootstrap(
     try{
       switch(typeof val) {
           case 'undefined':
-            
+
             break;
           case 'boolean':
             capi.sqlite3_result_int(pCtx, val ? 1 : 0);
@@ -6169,7 +6169,7 @@ globalThis.sqlite3ApiBootstrap = function sqlite3ApiBootstrap(
               );
               break;
             }
-            
+
           default:
             toss3("Don't not how to handle this UDF result value:",(typeof val), val);
       }
@@ -6178,13 +6178,13 @@ globalThis.sqlite3ApiBootstrap = function sqlite3ApiBootstrap(
     }
   };
 
-  
+
   capi.sqlite3_column_js = function(pStmt, iCol, throwIfCannotConvert=true){
     const v = capi.sqlite3_column_value(pStmt, iCol);
     return (0===v) ? undefined : capi.sqlite3_value_to_js(v, throwIfCannotConvert);
   };
 
-  
+
   const __newOldValue = function(pObj, iCol, impl){
     impl = capi[impl];
     if(!this.ptr) this.ptr = wasm.allocPtr();
@@ -6195,25 +6195,25 @@ globalThis.sqlite3ApiBootstrap = function sqlite3ApiBootstrap(
     return pv ? capi.sqlite3_value_to_js( pv, true ) : undefined;
   }.bind(Object.create(null));
 
-  
+
   capi.sqlite3_preupdate_new_js =
     (pDb, iCol)=>__newOldValue(pDb, iCol, 'sqlite3_preupdate_new');
 
-  
+
   capi.sqlite3_preupdate_old_js =
     (pDb, iCol)=>__newOldValue(pDb, iCol, 'sqlite3_preupdate_old');
 
-  
+
   capi.sqlite3changeset_new_js =
     (pChangesetIter, iCol) => __newOldValue(pChangesetIter, iCol,
                                             'sqlite3changeset_new');
 
-  
+
   capi.sqlite3changeset_old_js =
     (pChangesetIter, iCol)=>__newOldValue(pChangesetIter, iCol,
                                           'sqlite3changeset_old');
 
-  
+
   const sqlite3 = {
     WasmAllocError: WasmAllocError,
     SQLite3Error: SQLite3Error,
@@ -6221,22 +6221,22 @@ globalThis.sqlite3ApiBootstrap = function sqlite3ApiBootstrap(
     util,
     wasm,
     config,
-    
+
     version: Object.create(null),
 
-    
+
     client: undefined,
 
-    
+
     asyncPostInit: async function ff(){
       if(ff.isReady instanceof Promise) return ff.isReady;
       let lia = sqlite3ApiBootstrap.initializersAsync;
       delete sqlite3ApiBootstrap.initializersAsync;
       const postInit = async ()=>{
         if(!sqlite3.__isUnderTest){
-          
+
           delete sqlite3.util;
-          
+
           delete sqlite3.StructBinder;
         }
         return sqlite3;
@@ -6256,7 +6256,7 @@ globalThis.sqlite3ApiBootstrap = function sqlite3ApiBootstrap(
       while(lia.length) p = p.then(lia.shift());
       return ff.isReady = p.catch(catcher);
     },
-    
+
     scriptInfo: undefined
   };
   try{
@@ -6264,7 +6264,7 @@ globalThis.sqlite3ApiBootstrap = function sqlite3ApiBootstrap(
       f(sqlite3);
     });
   }catch(e){
-    
+
     console.error("sqlite3 bootstrap initializer threw:",e);
     throw e;
   }
@@ -6290,7 +6290,7 @@ globalThis.WhWasmUtilInstaller = function(target){
     target.bigIntEnabled = !!globalThis['BigInt64Array'];
   }
 
-  
+
   const toss = (...args)=>{throw new Error(args.join(' '))};
 
   if(!target.exports){
@@ -6300,30 +6300,30 @@ globalThis.WhWasmUtilInstaller = function(target){
     });
   }
 
-  
-  
 
-  
+
+
+
   const ptrIR = target.pointerIR || 'i32';
   const ptrSizeof = target.ptrSizeof =
         ('i32'===ptrIR ? 4
          : ('i64'===ptrIR
             ? 8 : toss("Unhandled ptrSizeof:",ptrIR)));
-  
+
   const cache = Object.create(null);
-  
+
   cache.heapSize = 0;
-  
+
   cache.memory = null;
-  
+
   cache.freeFuncIndexes = [];
-  
+
   cache.scopedAlloc = [];
 
   cache.utf8Decoder = new TextDecoder();
   cache.utf8Encoder = new TextEncoder('utf-8');
 
-  
+
   target.sizeofIR = (n)=>{
     switch(n){
         case 'i8': return 1;
@@ -6336,7 +6336,7 @@ globalThis.WhWasmUtilInstaller = function(target){
     }
   };
 
-  
+
   const heapWrappers = function(){
     if(!cache.memory){
       cache.memory = (target.memory instanceof WebAssembly.Memory)
@@ -6344,7 +6344,7 @@ globalThis.WhWasmUtilInstaller = function(target){
     }else if(cache.heapSize === cache.memory.buffer.byteLength){
       return cache;
     }
-    
+
     const b = cache.memory.buffer;
     cache.HEAP8 = new Int8Array(b); cache.HEAP8U = new Uint8Array(b);
     cache.HEAP16 = new Int16Array(b); cache.HEAP16U = new Uint16Array(b);
@@ -6357,25 +6357,25 @@ globalThis.WhWasmUtilInstaller = function(target){
     return cache;
   };
 
-  
+
   target.heap8 = ()=>heapWrappers().HEAP8;
 
-  
+
   target.heap8u = ()=>heapWrappers().HEAP8U;
 
-  
+
   target.heap16 = ()=>heapWrappers().HEAP16;
 
-  
+
   target.heap16u = ()=>heapWrappers().HEAP16U;
 
-  
+
   target.heap32 = ()=>heapWrappers().HEAP32;
 
-  
+
   target.heap32u = ()=>heapWrappers().HEAP32U;
 
-  
+
   target.heapForSize = function(n,unsigned = true){
     let ctor;
     const c = (cache.memory && cache.heapSize === cache.memory.buffer.byteLength)
@@ -6401,49 +6401,49 @@ globalThis.WhWasmUtilInstaller = function(target){
          "or (if BigInt is enabled) 64.");
   };
 
-  
+
   target.functionTable = function(){
     return target.exports.__indirect_function_table;
-    
+
   };
 
-  
+
   target.functionEntry = function(fptr){
     const ft = target.functionTable();
     return fptr < ft.length ? ft.get(fptr) : undefined;
   };
 
-  
+
   target.jsFuncToWasm = function f(func, sig){
-    
+
     if(!f._){
       f._ = {
-        
+
         sigTypes: Object.assign(Object.create(null),{
           i: 'i32', p: 'i32', P: 'i32', s: 'i32',
           j: 'i64', f: 'f32', d: 'f64'
         }),
-        
+
         typeCodes: Object.assign(Object.create(null),{
           f64: 0x7c, f32: 0x7d, i64: 0x7e, i32: 0x7f
         }),
-        
+
         uleb128Encode: function(tgt, method, n){
           if(n<128) tgt[method](n);
           else tgt[method]( (n % 128) | 128, n>>7);
         },
-        
+
         rxJSig: /^(\w)\((\w*)\)$/,
-        
+
         sigParams: function(sig){
           const m = f._.rxJSig.exec(sig);
           return m ? m[2] : sig.substr(1);
         },
-        
+
         letterType: (x)=>f._.sigTypes[x] || toss("Invalid signature letter:",x),
-        
-        
-        
+
+
+
         pushSigType: (dest, letter)=>dest.push(f._.typeCodes[f._.letterType(letter)])
       };
     }
@@ -6463,16 +6463,16 @@ globalThis.WhWasmUtilInstaller = function(target){
     }
     f._.uleb128Encode(wasmCode, 'unshift', wasmCode.length);
     wasmCode.unshift(
-      0x00, 0x61, 0x73, 0x6d, 
-      0x01, 0x00, 0x00, 0x00, 
-      0x01 
+      0x00, 0x61, 0x73, 0x6d,
+      0x01, 0x00, 0x00, 0x00,
+      0x01
     );
     wasmCode.push(
        0x02, 0x07,
-      
+
       0x01, 0x01, 0x65, 0x01, 0x66, 0x00, 0x00,
        0x07, 0x05,
-      
+
       0x01, 0x01, 0x66, 0x00, 0x00
     );
     return (new WebAssembly.Instance(
@@ -6481,7 +6481,7 @@ globalThis.WhWasmUtilInstaller = function(target){
       })).exports['f'];
   };
 
-  
+
   const __installFunction = function f(func, sig, scoped){
     if(scoped && !cache.scopedAlloc.length){
       toss("No scopedAllocPush() scope is active.");
@@ -6500,7 +6500,7 @@ globalThis.WhWasmUtilInstaller = function(target){
     let ptr;
     while(cache.freeFuncIndexes.length){
       ptr = cache.freeFuncIndexes.pop();
-      if(ft.get(ptr)){ 
+      if(ft.get(ptr)){
         ptr = null;
         continue;
       }else{
@@ -6512,7 +6512,7 @@ globalThis.WhWasmUtilInstaller = function(target){
       ft.grow(1);
     }
     try{
-      
+
       ft.set(ptr, func);
       if(scoped){
         cache.scopedAlloc[cache.scopedAlloc.length-1].push(ptr);
@@ -6524,7 +6524,7 @@ globalThis.WhWasmUtilInstaller = function(target){
         throw e;
       }
     }
-    
+
     try {
       const fptr = target.jsFuncToWasm(func, sig);
       ft.set(ptr, fptr);
@@ -6538,13 +6538,13 @@ globalThis.WhWasmUtilInstaller = function(target){
     return ptr;
   };
 
-  
+
   target.installFunction = (func, sig)=>__installFunction(func, sig, false);
 
-  
+
   target.scopedInstallFunction = (func, sig)=>__installFunction(func, sig, true);
 
-  
+
   target.uninstallFunction = function(ptr){
     if(!ptr && 0!==ptr) return undefined;
     const fi = cache.freeFuncIndexes;
@@ -6555,7 +6555,7 @@ globalThis.WhWasmUtilInstaller = function(target){
     return rc;
   };
 
-  
+
   target.peek = function f(ptr, type='i8'){
     if(type.endsWith('*')) type = ptrIR;
     const c = (cache.memory && cache.heapSize === cache.memory.buffer.byteLength)
@@ -6576,7 +6576,7 @@ globalThis.WhWasmUtilInstaller = function(target){
               rc = BigInt(c.HEAP64[ptr>>3]);
               break;
             }
-            
+
           default:
             toss('Invalid type for peek():',type);
       }
@@ -6585,7 +6585,7 @@ globalThis.WhWasmUtilInstaller = function(target){
     return list || rc;
   };
 
-  
+
   target.poke = function(ptr, value, type='i8'){
     if (type.endsWith('*')) type = ptrIR;
     const c = (cache.memory && cache.heapSize === cache.memory.buffer.byteLength)
@@ -6603,7 +6603,7 @@ globalThis.WhWasmUtilInstaller = function(target){
               c.HEAP64[p>>3] = BigInt(value);
               continue;
             }
-            
+
           default:
             toss('Invalid type for poke(): ' + type);
       }
@@ -6611,53 +6611,53 @@ globalThis.WhWasmUtilInstaller = function(target){
     return this;
   };
 
-  
+
   target.peekPtr = (...ptr)=>target.peek( (1===ptr.length ? ptr[0] : ptr), ptrIR );
 
-  
+
   target.pokePtr = (ptr, value=0)=>target.poke(ptr, value, ptrIR);
 
-  
+
   target.peek8 = (...ptr)=>target.peek( (1===ptr.length ? ptr[0] : ptr), 'i8' );
-  
+
   target.poke8 = (ptr, value)=>target.poke(ptr, value, 'i8');
-  
+
   target.peek16 = (...ptr)=>target.peek( (1===ptr.length ? ptr[0] : ptr), 'i16' );
-  
+
   target.poke16 = (ptr, value)=>target.poke(ptr, value, 'i16');
-  
+
   target.peek32 = (...ptr)=>target.peek( (1===ptr.length ? ptr[0] : ptr), 'i32' );
-  
+
   target.poke32 = (ptr, value)=>target.poke(ptr, value, 'i32');
-  
+
   target.peek64 = (...ptr)=>target.peek( (1===ptr.length ? ptr[0] : ptr), 'i64' );
-  
+
   target.poke64 = (ptr, value)=>target.poke(ptr, value, 'i64');
-  
+
   target.peek32f = (...ptr)=>target.peek( (1===ptr.length ? ptr[0] : ptr), 'f32' );
-  
+
   target.poke32f = (ptr, value)=>target.poke(ptr, value, 'f32');
-  
+
   target.peek64f = (...ptr)=>target.peek( (1===ptr.length ? ptr[0] : ptr), 'f64' );
-  
+
   target.poke64f = (ptr, value)=>target.poke(ptr, value, 'f64');
 
-  
+
   target.getMemValue = target.peek;
-  
+
   target.getPtrValue = target.peekPtr;
-  
+
   target.setMemValue = target.poke;
-  
+
   target.setPtrValue = target.pokePtr;
 
-  
+
   target.isPtr32 = (ptr)=>('number'===typeof ptr && (ptr===(ptr|0)) && ptr>=0);
 
-  
+
   target.isPtr = target.isPtr32;
 
-  
+
   target.cstrlen = function(ptr){
     if(!ptr || !target.isPtr(ptr)) return null;
     const h = heapWrappers().HEAP8U;
@@ -6666,7 +6666,7 @@ globalThis.WhWasmUtilInstaller = function(target){
     return pos - ptr;
   };
 
-  
+
   const __SAB = ('undefined'===typeof SharedArrayBuffer)
         ? function(){} : SharedArrayBuffer;
   const __utf8Decode = function(arrayBuffer, begin, end){
@@ -6677,15 +6677,15 @@ globalThis.WhWasmUtilInstaller = function(target){
     );
   };
 
-  
+
   target.cstrToJs = function(ptr){
     const n = target.cstrlen(ptr);
     return n ? __utf8Decode(heapWrappers().HEAP8U, ptr, ptr+n) : (null===n ? n : "");
   };
 
-  
+
   target.jstrlen = function(str){
-    
+
     if('string'!==typeof str) return null;
     const n = str.length;
     let len = 0;
@@ -6702,9 +6702,9 @@ globalThis.WhWasmUtilInstaller = function(target){
     return len;
   };
 
-  
+
   target.jstrcpy = function(jstr, tgt, offset = 0, maxBytes = -1, addNul = true){
-    
+
     if(!tgt || (!(tgt instanceof Int8Array) && !(tgt instanceof Uint8Array))){
       toss("jstrcpy() target must be an Int8Array or Uint8Array.");
     }
@@ -6741,7 +6741,7 @@ globalThis.WhWasmUtilInstaller = function(target){
     return offset - begin;
   };
 
-  
+
   target.cstrncpy = function(tgtPtr, srcPtr, n){
     if(!tgtPtr || !srcPtr) toss("cstrncpy() does not accept NULL strings.");
     if(n<0) n = target.cstrlen(strPtr)+1;
@@ -6755,34 +6755,34 @@ globalThis.WhWasmUtilInstaller = function(target){
     return i;
   };
 
-  
+
   target.jstrToUintArray = (str, addNul=false)=>{
     return cache.utf8Encoder.encode(addNul ? (str+"\0") : str);
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   };
 
   const __affirmAlloc = (obj,funcName)=>{
@@ -6811,12 +6811,12 @@ globalThis.WhWasmUtilInstaller = function(target){
     }
   };
 
-  
+
   target.allocCString =
     (jstr, returnWithLength=false)=>__allocCStr(jstr, returnWithLength,
                                                 target.alloc, 'allocCString()');
 
-  
+
   target.scopedAllocPush = function(){
     __affirmAlloc(target, 'scopedAllocPush');
     const a = [];
@@ -6824,7 +6824,7 @@ globalThis.WhWasmUtilInstaller = function(target){
     return a;
   };
 
-  
+
   target.scopedAllocPop = function(state){
     __affirmAlloc(target, 'scopedAllocPop');
     const n = arguments.length
@@ -6835,14 +6835,14 @@ globalThis.WhWasmUtilInstaller = function(target){
     cache.scopedAlloc.splice(n,1);
     for(let p; (p = state.pop()); ){
       if(target.functionEntry(p)){
-        
+
         target.uninstallFunction(p);
       }
       else target.dealloc(p);
     }
   };
 
-  
+
   target.scopedAlloc = function(n){
     if(!cache.scopedAlloc.length){
       toss("No scopedAllocPush() scope is active.");
@@ -6858,12 +6858,12 @@ globalThis.WhWasmUtilInstaller = function(target){
     set: ()=>toss("The 'active' property is read-only.")
   });
 
-  
+
   target.scopedAllocCString =
     (jstr, returnWithLength=false)=>__allocCStr(jstr, returnWithLength,
                                                 target.scopedAlloc, 'scopedAllocCString()');
 
-  
+
   const __allocMainArgv = function(isScoped, list){
     const pList = target[
       isScoped ? 'scopedAlloc' : 'alloc'
@@ -6879,13 +6879,13 @@ globalThis.WhWasmUtilInstaller = function(target){
     return pList;
   };
 
-  
+
   target.scopedAllocMainArgv = (list)=>__allocMainArgv(true, list);
 
-  
+
   target.allocMainArgv = (list)=>__allocMainArgv(false, list);
 
-  
+
   target.cArgvToJs = (argc, pArgv)=>{
     const list = [];
     for(let i = 0; i < argc; ++i){
@@ -6895,13 +6895,13 @@ globalThis.WhWasmUtilInstaller = function(target){
     return list;
   };
 
-  
+
   target.scopedAllocCall = function(func){
     target.scopedAllocPush();
     try{ return func() } finally{ target.scopedAllocPop() }
   };
 
-  
+
   const __allocPtr = function(howMany, safePtrSize, method){
     __affirmAlloc(target, method);
     const pIr = safePtrSize ? 'i64' : ptrIR;
@@ -6919,15 +6919,15 @@ globalThis.WhWasmUtilInstaller = function(target){
     return a;
   };
 
-  
+
   target.allocPtr =
     (howMany=1, safePtrSize=true)=>__allocPtr(howMany, safePtrSize, 'alloc');
 
-  
+
   target.scopedAllocPtr =
     (howMany=1, safePtrSize=true)=>__allocPtr(howMany, safePtrSize, 'scopedAlloc');
 
-  
+
   target.xGet = function(name){
     return target.exports[name] || toss("Cannot find exported symbol:",name);
   };
@@ -6935,7 +6935,7 @@ globalThis.WhWasmUtilInstaller = function(target){
   const __argcMismatch =
         (f,n)=>toss(f+"() requires",n,"argument(s).");
 
-  
+
   target.xCall = function(fname, ...args){
     const f = target.xGet(fname);
     if(!(f instanceof Function)) toss("Exported symbol",fname,"is not a function.");
@@ -6946,12 +6946,12 @@ globalThis.WhWasmUtilInstaller = function(target){
       : f.apply(null, args);
   };
 
-  
+
   cache.xWrap = Object.create(null);
   cache.xWrap.convert = Object.create(null);
-  
+
   cache.xWrap.convert.arg = new Map;
-  
+
   cache.xWrap.convert.result = new Map;
   const xArg = cache.xWrap.convert.arg, xResult = cache.xWrap.convert.result;
 
@@ -6979,7 +6979,7 @@ globalThis.WhWasmUtilInstaller = function(target){
     .set('null', (v)=>v)
     .set(null, xResult.get('null'));
 
-  { 
+  {
     const copyToResult = ['i8', 'i16', 'i32', 'int',
                           'f32', 'float', 'f64', 'double'];
     if(target.bigIntEnabled) copyToResult.push('i64');
@@ -6991,7 +6991,7 @@ globalThis.WhWasmUtilInstaller = function(target){
     }
   }
 
-  
+
   const __xArgString = function(v){
     if('string'===typeof v) return target.scopedAllocCString(v);
     return v ? __xArgPtr(v) : null;
@@ -6999,7 +6999,7 @@ globalThis.WhWasmUtilInstaller = function(target){
   xArg.set('string', __xArgString)
     .set('utf8', __xArgString)
     .set('pointer', __xArgString);
-  
+
 
   xResult.set('string', (i)=>target.cstrToJs(i))
     .set('utf8', xResult.get('string'))
@@ -7014,18 +7014,18 @@ globalThis.WhWasmUtilInstaller = function(target){
       finally{ target.dealloc(i) }
     });
 
-  
+
   const AbstractArgAdapter = class {
     constructor(opt){
       this.name = opt.name || 'unnamed adapter';
     }
-    
+
     convertArg(v,argv,argIndex){
       toss("AbstractArgAdapter must be subclassed.");
     }
   };
 
-  
+
   xArg.FuncPtrAdapter = class FuncPtrAdapter extends AbstractArgAdapter {
     constructor(opt) {
       super(opt);
@@ -7050,19 +7050,19 @@ globalThis.WhWasmUtilInstaller = function(target){
       this.isContext = 'context'===this.bindScope;
       this.isPermanent = 'permanent'===this.bindScope;
       this.singleton = ('singleton'===this.bindScope) ? [] : undefined;
-      
+
       this.callProxy = (opt.callProxy instanceof Function)
         ? opt.callProxy : undefined;
     }
 
-    
 
-    
+
+
     contextKey(argv,argIndex){
       return this;
     }
 
-    
+
     contextMap(key){
       const cm = (this.__cmap || (this.__cmap = new Map));
       let rc = cm.get(key);
@@ -7070,18 +7070,18 @@ globalThis.WhWasmUtilInstaller = function(target){
       return rc;
     }
 
-    
+
     convertArg(v,argv,argIndex){
-      
+
       let pair = this.singleton;
       if(!pair && this.isContext){
         pair = this.contextMap(this.contextKey(argv,argIndex));
-        
+
       }
       if(pair && pair[0]===v) return pair[1];
       if(v instanceof Function){
-        
-        
+
+
         if(this.callProxy) v = this.callProxy(v);
         const fp = __installFunction(v, this.signature, this.isTransient);
         if(FuncPtrAdapter.debugFuncInstall){
@@ -7089,14 +7089,14 @@ globalThis.WhWasmUtilInstaller = function(target){
                                   this.contextKey(argv,argIndex), '@'+fp, v);
         }
         if(pair){
-          
+
           if(pair[1]){
             if(FuncPtrAdapter.debugFuncInstall){
               FuncPtrAdapter.debugOut("FuncPtrAdapter uninstalling", this,
                                       this.contextKey(argv,argIndex), '@'+pair[1], v);
             }
             try{
-              
+
               cache.scopedAlloc[cache.scopedAlloc.length-1].push(pair[1]);
             }
             catch(e){}
@@ -7106,9 +7106,9 @@ globalThis.WhWasmUtilInstaller = function(target){
         }
         return fp;
       }else if(target.isPtr(v) || null===v || undefined===v){
-        
+
         if(pair && pair[1] && pair[1]!==v){
-          
+
           if(FuncPtrAdapter.debugFuncInstall){
             FuncPtrAdapter.debugOut("FuncPtrAdapter uninstalling", this,
                                     this.contextKey(argv,argIndex), '@'+pair[1], v);
@@ -7128,13 +7128,13 @@ globalThis.WhWasmUtilInstaller = function(target){
     }
   };
 
-  
+
   xArg.FuncPtrAdapter.warnOnUse = false;
 
-  
+
   xArg.FuncPtrAdapter.debugFuncInstall = false;
 
-  
+
   xArg.FuncPtrAdapter.debugOut = console.debug.bind(console);
 
   xArg.FuncPtrAdapter.bindScopes = [
@@ -7155,7 +7155,7 @@ globalThis.WhWasmUtilInstaller = function(target){
   cache.xWrap.convertResultNoCheck =
     (t,v)=>(null===t ? v : (t ? xResult.get(t)(v) : undefined));
 
-  
+
   target.xWrap = function(fArg, resultType, ...argTypes){
     if(3===arguments.length && Array.isArray(arguments[2])){
       argTypes = arguments[2];
@@ -7169,7 +7169,7 @@ globalThis.WhWasmUtilInstaller = function(target){
     if(fIsFunc) fArg = xf.name || 'unnamed function';
     if(argTypes.length!==xf.length) __argcMismatch(fArg, xf.length);
     if((null===resultType) && 0===xf.length){
-      
+
       return xf;
     }
     ;
@@ -7180,7 +7180,7 @@ globalThis.WhWasmUtilInstaller = function(target){
     }
     const cxw = cache.xWrap;
     if(0===xf.length){
-      
+
       return (...args)=>(args.length
                          ? __argcMismatch(fArg, xf.length)
                          : cxw.convertResult(resultType, xf.call(null)));
@@ -7189,7 +7189,7 @@ globalThis.WhWasmUtilInstaller = function(target){
       if(args.length!==xf.length) __argcMismatch(fArg, xf.length);
       const scope = target.scopedAllocPush();
       try{
-        
+
         for(const i in args) args[i] = cxw.convertArgNoCheck(
           argTypes[i], args[i], args, i
         );
@@ -7200,7 +7200,7 @@ globalThis.WhWasmUtilInstaller = function(target){
     };
   };
 
-  
+
   const __xAdapter = function(func, argc, typeName, adapter, modeName, xcvPart){
     if('string'===typeof typeName){
       if(1===argc) return xcvPart.get(typeName);
@@ -7218,13 +7218,13 @@ globalThis.WhWasmUtilInstaller = function(target){
     toss("Invalid arguments to",modeName);
   };
 
-  
+
   target.xWrap.resultAdapter = function f(typeName, adapter){
     return __xAdapter(f, arguments.length, typeName, adapter,
                       'resultAdapter()', xResult);
   };
 
-  
+
   target.xWrap.argAdapter = function f(typeName, adapter){
     return __xAdapter(f, arguments.length, typeName, adapter,
                       'argAdapter()', xArg);
@@ -7232,16 +7232,16 @@ globalThis.WhWasmUtilInstaller = function(target){
 
   target.xWrap.FuncPtrAdapter = xArg.FuncPtrAdapter;
 
-  
+
   target.xCallWrapped = function(fArg, resultType, argTypes, ...args){
     if(Array.isArray(arguments[3])) args = arguments[3];
     return target.xWrap(fArg, resultType, argTypes||[]).apply(null, args||[]);
   };
 
-  
+
   target.xWrap.testConvertArg = cache.xWrap.convertArg;
 
-  
+
   target.xWrap.testConvertResult = cache.xWrap.convertResult;
 
   return target;
@@ -7252,15 +7252,15 @@ globalThis.WhWasmUtilInstaller.yawl = function(config){
   const wfetch = ()=>fetch(config.uri, {credentials: 'same-origin'});
   const wui = this;
   const finalThen = function(arg){
-    
+
     if(config.wasmUtilTarget){
       const toss = (...args)=>{throw new Error(args.join(' '))};
       const tgt = config.wasmUtilTarget;
       tgt.module = arg.module;
       tgt.instance = arg.instance;
-      
+
       if(!tgt.instance.exports.memory){
-        
+
         tgt.memory = (config.imports && config.imports.env
                       && config.imports.env.memory)
           || toss("Missing 'memory' object!");
@@ -7282,7 +7282,7 @@ globalThis.WhWasmUtilInstaller.yawl = function(config){
           return WebAssembly.instantiateStreaming(wfetch(), config.imports||{})
             .then(finalThen);
         }
-        : function loadWasmOldSchool(){ 
+        : function loadWasmOldSchool(){
           return wfetch()
             .then(response => response.arrayBuffer())
             .then(bytes => WebAssembly.instantiate(bytes, config.imports||{}))
@@ -7297,10 +7297,10 @@ globalThis.WhWasmUtilInstaller.yawl = function(config){
 globalThis.Jaccwabyt = function StructBinderFactory(config){
 
 
-  
+
   const toss = (...args)=>{throw new Error(args.join(' '))};
 
-  
+
   if(!(config.heap instanceof WebAssembly.Memory)
      && !(config.heap instanceof Function)){
     toss("config.heap must be WebAssembly.Memory instance or a function.");
@@ -7321,14 +7321,14 @@ globalThis.Jaccwabyt = function StructBinderFactory(config){
                          ? !!globalThis['BigInt64Array'] : !!config.bigIntEnabled),
         BigInt = globalThis['BigInt'],
         BigInt64Array = globalThis['BigInt64Array'],
-        
+
         ptrSizeof = config.ptrSizeof || 4,
         ptrIR = config.ptrIR || 'i32'
   ;
 
   if(!SBF.debugFlags){
     SBF.__makeDebugFlags = function(deriveFrom=null){
-      
+
       if(deriveFrom && deriveFrom.__flags) deriveFrom = deriveFrom.__flags;
       const f = function f(flags){
         if(0===arguments.length){
@@ -7358,18 +7358,18 @@ globalThis.Jaccwabyt = function StructBinderFactory(config){
   const isLittleEndian = (function() {
     const buffer = new ArrayBuffer(2);
     new DataView(buffer).setInt16(0, 256, true );
-    
+
     return new Int16Array(buffer)[0] === 256;
   })();
-  
 
-  
+
+
   const isFuncSig = (s)=>'('===s[1];
-  
+
   const isPtrSig = (s)=>'p'===s || 'P'===s;
   const isAutoPtrSig = (s)=>'P'===s ;
   const sigLetter = (s)=>isFuncSig(s) ? 'p' : s[0];
-  
+
   const sigIR = function(s){
     switch(sigLetter(s)){
         case 'c': case 'C': return 'i8';
@@ -7384,7 +7384,7 @@ globalThis.Jaccwabyt = function StructBinderFactory(config){
 
   const affirmBigIntArray = BigInt64Array
         ? ()=>true : ()=>toss('BigInt64Array is not available.');
-  
+
   const sigDVGetter = function(s){
     switch(sigLetter(s)) {
         case 'p': case 'P': case 's': {
@@ -7403,7 +7403,7 @@ globalThis.Jaccwabyt = function StructBinderFactory(config){
     }
     toss("Unhandled DataView getter for signature:",s);
   };
-  
+
   const sigDVSetter = function(s){
     switch(sigLetter(s)){
         case 'p': case 'P': case 's': {
@@ -7422,7 +7422,7 @@ globalThis.Jaccwabyt = function StructBinderFactory(config){
     }
     toss("Unhandled DataView setter for signature:",s);
   };
-  
+
   const sigDVSetWrapper = function(s){
     switch(sigLetter(s)) {
         case 'i': case 'f': case 'c': case 'C': case 'd': return Number;
@@ -7437,20 +7437,20 @@ globalThis.Jaccwabyt = function StructBinderFactory(config){
     toss("Unhandled DataView set wrapper for signature:",s);
   };
 
-  
+
   const sPropName = (s,k)=>s+'::'+k;
 
   const __propThrowOnSet = function(structName,propName){
     return ()=>toss(sPropName(structName,propName),"is read-only.");
   };
 
-  
+
   const __instancePointerMap = new WeakMap();
 
-  
+
   const xPtrPropName = '(pointer-is-external)';
 
-  
+
   const __freeStruct = function(ctor, obj, m){
     if(!m) m = __instancePointerMap.get(obj);
     if(m) {
@@ -7462,8 +7462,8 @@ globalThis.Jaccwabyt = function StructBinderFactory(config){
             if(x instanceof Function) x.call(obj);
             else if(x instanceof StructType) x.dispose();
             else if('number' === typeof x) dealloc(x);
-            
-            
+
+
           }catch(e){
             console.warn("ondispose() for",ctor.structName,'@',
                          m,'threw. NOT propagating it.',e);
@@ -7472,7 +7472,7 @@ globalThis.Jaccwabyt = function StructBinderFactory(config){
       }else if(obj.ondispose instanceof Function){
         try{obj.ondispose()}
         catch(e){
-          
+
           console.warn("ondispose() for",ctor.structName,'@',
                        m,'threw. NOT propagating it.',e);
         }
@@ -7487,11 +7487,11 @@ globalThis.Jaccwabyt = function StructBinderFactory(config){
     }
   };
 
-  
+
   const rop = (v)=>{return {configurable: false, writable: false,
                             iterable: false, value: v}};
 
-  
+
   const __allocStruct = function(ctor, obj, m){
     let fill = !m;
     if(m) Object.defineProperty(obj, xPtrPropName, rop(m));
@@ -7512,7 +7512,7 @@ globalThis.Jaccwabyt = function StructBinderFactory(config){
       throw e;
     }
   };
-  
+
   const __memoryDump = function(){
     const p = this.pointer;
     return p
@@ -7523,11 +7523,11 @@ globalThis.Jaccwabyt = function StructBinderFactory(config){
   const __memberKey = (k)=>memberPrefix + k + memberSuffix;
   const __memberKeyProp = rop(__memberKey);
 
-  
+
   const __lookupMember = function(structInfo, memberName, tossIfNotFound=true){
     let m = structInfo.members[memberName];
     if(!m && (memberPrefix || memberSuffix)){
-      
+
       for(const v of Object.values(structInfo.members)){
         if(v.key===memberName){ m = v; break; }
       }
@@ -7538,7 +7538,7 @@ globalThis.Jaccwabyt = function StructBinderFactory(config){
     return m;
   };
 
-  
+
   const __memberSignature = function f(obj,memberName,emscriptenFormat=false){
     if(!f._) f._ = (x)=>x.replace(/[^vipPsjrdcC]/g,"").replace(/[pPscC]/g,'i');
     const m = __lookupMember(obj.structInfo, memberName, true);
@@ -7549,12 +7549,12 @@ globalThis.Jaccwabyt = function StructBinderFactory(config){
     configurable: false, enumerable: false,
     get: function(){return __instancePointerMap.get(this)},
     set: ()=>toss("Cannot assign the 'pointer' property of a struct.")
-    
-    
-    
+
+
+
   };
 
-  
+
   const __structMemberKeys = rop(function(){
     const a = [];
     for(const k of Object.keys(this.structInfo.members)){
@@ -7565,7 +7565,7 @@ globalThis.Jaccwabyt = function StructBinderFactory(config){
 
   const __utf8Decoder = new TextDecoder('utf-8');
   const __utf8Encoder = new TextEncoder();
-  
+
   const __SAB = ('undefined'===typeof SharedArrayBuffer)
         ? function(){} : SharedArrayBuffer;
   const __utf8Decode = function(arrayBuffer, begin, end){
@@ -7575,36 +7575,36 @@ globalThis.Jaccwabyt = function StructBinderFactory(config){
         : arrayBuffer.subarray(begin, end)
     );
   };
-  
+
   const __memberIsString = function(obj,memberName, tossIfNotFound=false){
     const m = __lookupMember(obj.structInfo, memberName, tossIfNotFound);
     return (m && 1===m.signature.length && 's'===m.signature[0]) ? m : false;
   };
 
-  
+
   const __affirmCStringSignature = function(member){
     if('s'===member.signature) return;
     toss("Invalid member type signature for C-string value:",
          JSON.stringify(member));
   };
 
-  
+
   const __memberToJsString = function f(obj,memberName){
     const m = __lookupMember(obj.structInfo, memberName, true);
     __affirmCStringSignature(m);
     const addr = obj[m.key];
-    
+
     if(!addr) return null;
     let pos = addr;
     const mem = heap();
     for( ; mem[pos]!==0; ++pos ) {
-      
+
     };
-    
+
     return (addr===pos) ? "" : __utf8Decode(mem, addr, pos);
   };
 
-  
+
   const __addOnDispose = function(obj, ...v){
     if(obj.ondispose){
       if(!Array.isArray(obj.ondispose)){
@@ -7616,45 +7616,45 @@ globalThis.Jaccwabyt = function StructBinderFactory(config){
     obj.ondispose.push(...v);
   };
 
-  
+
   const __allocCString = function(str){
     const u = __utf8Encoder.encode(str);
     const mem = alloc(u.length+1);
     if(!mem) toss("Allocation error while duplicating string:",str);
     const h = heap();
-    
-    
+
+
     h.set(u, mem);
     h[mem + u.length] = 0;
-    
+
     return mem;
   };
 
-  
+
   const __setMemberCString = function(obj, memberName, str){
     const m = __lookupMember(obj.structInfo, memberName, true);
     __affirmCStringSignature(m);
-    
+
     const mem = __allocCString(str);
     obj[m.key] = mem;
     __addOnDispose(obj, mem);
     return obj;
   };
 
-  
+
   const StructType = function ctor(structName, structInfo){
     if(arguments[2]!==rop){
       toss("Do not call the StructType constructor",
            "from client-level code.");
     }
     Object.defineProperties(this,{
-      
+
       structName: rop(structName),
       structInfo: rop(structInfo)
     });
   };
 
-  
+
   StructType.prototype = Object.create(null, {
     dispose: rop(function(){__freeStruct(this.constructor, this)}),
     lookupMember: rop(function(memberName, tossIfNotFound=true){
@@ -7677,7 +7677,7 @@ globalThis.Jaccwabyt = function StructBinderFactory(config){
       return __setMemberCString(this, memberName, str);
     })
   });
-  
+
   Object.assign(StructType.prototype,{
     addOnDispose: function(...v){
       __addOnDispose(this,...v);
@@ -7685,7 +7685,7 @@ globalThis.Jaccwabyt = function StructBinderFactory(config){
     }
   });
 
-  
+
   Object.defineProperties(StructType, {
     allocCString: rop(__allocCString),
     isA: rop((v)=>v instanceof StructType),
@@ -7695,15 +7695,15 @@ globalThis.Jaccwabyt = function StructBinderFactory(config){
 
   const isNumericValue = (v)=>Number.isFinite(v) || (v instanceof (BigInt || Number));
 
-  
+
   const makeMemberWrapper = function f(ctor,name, descr){
     if(!f._){
-      
+
       f._ = {getters: {}, setters: {}, sw:{}};
       const a = ['i','c','C','p','P','s','f','d','v()'];
       if(bigIntEnabled) a.push('j');
       a.forEach(function(v){
-        
+
         f._.getters[v] = sigDVGetter(v) ;
         f._.setters[v] = sigDVSetter(v) ;
         f._.sw[v] = sigDVSetWrapper(v)  ;
@@ -7726,7 +7726,7 @@ globalThis.Jaccwabyt = function StructBinderFactory(config){
     const sigGlyph = sigLetter(descr.signature);
     const xPropName = sPropName(ctor.prototype.structName,key);
     const dbg = ctor.prototype.debugFlags.__flags;
-    
+
     const prop = Object.create(null);
     prop.configurable = false;
     prop.enumerable = false;
@@ -7755,7 +7755,7 @@ globalThis.Jaccwabyt = function StructBinderFactory(config){
         if(null===v) v = 0;
         else while(!isNumericValue(v)){
           if(isAutoPtrSig(descr.signature) && (v instanceof StructType)){
-            
+
             v = v.pointer || 0;
             if(dbg.setter) log("debug.setter:",xPropName,"resolved to",v);
             break;
@@ -7769,8 +7769,8 @@ globalThis.Jaccwabyt = function StructBinderFactory(config){
     }
     Object.defineProperty(ctor.prototype, key, prop);
   };
-  
-  
+
+
   const StructBinder = function StructBinder(structName, structInfo){
     if(1===arguments.length){
       structInfo = structName;
@@ -7781,7 +7781,7 @@ globalThis.Jaccwabyt = function StructBinderFactory(config){
     if(!structName) toss("Struct name is required.");
     let lastMember = false;
     Object.keys(structInfo.members).forEach((k)=>{
-      
+
       const m = structInfo.members[k];
       if(!m.sizeof) toss(structName,"member",k,"is missing sizeof.");
       else if(m.sizeof===1){
@@ -7790,8 +7790,8 @@ globalThis.Jaccwabyt = function StructBinderFactory(config){
                sPropName(structInfo.name,k),
                "with signature",m.signature);
       }else{
-        
-        
+
+
         if(0!==(m.sizeof%4)){
           console.warn("Invalid struct member description =",m,"from",structInfo);
           toss(structName,"member",k,"sizeof is not aligned. sizeof="+m.sizeof);
@@ -7810,7 +7810,7 @@ globalThis.Jaccwabyt = function StructBinderFactory(config){
            "extends past end of struct (sizeof="+structInfo.sizeof+").");
     }
     const debugFlags = rop(SBF.__makeDebugFlags(StructBinder.debugFlags));
-    
+
     const StructCtor = function StructCtor(externalMemory){
       if(!(this instanceof StructCtor)){
         toss("The",structName,"constructor may only be called via 'new'.");
@@ -7837,7 +7837,7 @@ globalThis.Jaccwabyt = function StructBinderFactory(config){
     Object.defineProperties(StructCtor.prototype,{
       debugFlags: debugFlags,
       constructor: rop(StructCtor)
-      
+
     });
     Object.keys(structInfo.members).forEach(
       (name)=>makeMemberWrapper(StructCtor, name, structInfo.members[name])
@@ -7864,8 +7864,8 @@ globalThis.sqlite3ApiBootstrap.initializers.push(function(sqlite3){
   delete globalThis.WhWasmUtilInstaller;
 
   if(0){
-    
-    
+
+
     const dealloc = wasm.exports[sqlite3.config.deallocExportName];
     const nFunc = wasm.functionTable().length;
     let i;
@@ -7881,12 +7881,12 @@ globalThis.sqlite3ApiBootstrap.initializers.push(function(sqlite3){
     }
   }
 
-  
+
   wasm.bindingSignatures = [
-    
+
     ["sqlite3_aggregate_context","void*", "sqlite3_context*", "int"],
-    
-    
+
+
     ["sqlite3_bind_double","int", "sqlite3_stmt*", "int", "f64"],
     ["sqlite3_bind_int","int", "sqlite3_stmt*", "int", "int"],
     ["sqlite3_bind_null",undefined, "sqlite3_stmt*", "int"],
@@ -7903,8 +7903,8 @@ globalThis.sqlite3ApiBootstrap.initializers.push(function(sqlite3){
       "*"
     ]],
     ["sqlite3_busy_timeout","int", "sqlite3*", "int"],
-    
-    
+
+
     ["sqlite3_changes", "int", "sqlite3*"],
     ["sqlite3_clear_bindings","int", "sqlite3_stmt*"],
     ["sqlite3_collation_needed", "int", "sqlite3*", "*", "*"],
@@ -7931,8 +7931,8 @@ globalThis.sqlite3ApiBootstrap.initializers.push(function(sqlite3){
     ["sqlite3_complete", "int", "string:flexible"],
     ["sqlite3_context_db_handle", "sqlite3*", "sqlite3_context*"],
 
-    
-    
+
+
     ["sqlite3_data_count", "int", "sqlite3_stmt*"],
     ["sqlite3_db_filename", "string", "sqlite3*", "string"],
     ["sqlite3_db_handle", "sqlite3*", "sqlite3_stmt*"],
@@ -7955,7 +7955,7 @@ globalThis.sqlite3ApiBootstrap.initializers.push(function(sqlite3){
               if(!aNames) aNames = wasm.cArgvToJs(nCols, pColNames);
               return callback(aVals, aNames) | 0;
             }catch(e){
-              
+
               return e.resultCode || capi.SQLITE_ERROR;
             }
           }
@@ -7971,7 +7971,7 @@ globalThis.sqlite3ApiBootstrap.initializers.push(function(sqlite3){
     ["sqlite3_free", undefined,"*"],
     ["sqlite3_get_auxdata", "*", "sqlite3_context*", "int"],
     ["sqlite3_initialize", undefined],
-    
+
     ["sqlite3_keyword_count", "int"],
     ["sqlite3_keyword_name", "int", ["int", "**", "*"]],
     ["sqlite3_keyword_check", "int", ["string", "int"]],
@@ -7981,8 +7981,8 @@ globalThis.sqlite3ApiBootstrap.initializers.push(function(sqlite3){
     ["sqlite3_malloc", "*","int"],
     ["sqlite3_open", "int", "string", "*"],
     ["sqlite3_open_v2", "int", "string", "*", "int", "string"],
-    
-    
+
+
     ["sqlite3_progress_handler", undefined, [
       "sqlite3*", "int", new wasm.xWrap.FuncPtrAdapter({
         name: 'xProgressHandler',
@@ -7993,7 +7993,7 @@ globalThis.sqlite3ApiBootstrap.initializers.push(function(sqlite3){
     ]],
     ["sqlite3_realloc", "*","*","int"],
     ["sqlite3_reset", "int", "sqlite3_stmt*"],
-    
+
     ["sqlite3_result_blob", undefined, "sqlite3_context*", "*", "int", "*"],
     ["sqlite3_result_double", undefined, "sqlite3_context*", "f64"],
     ["sqlite3_result_error", undefined, "sqlite3_context*", "string", "int"],
@@ -8070,7 +8070,7 @@ globalThis.sqlite3ApiBootstrap.initializers.push(function(sqlite3){
       "*"
     ]],
     ["sqlite3_txn_state", "int", ["sqlite3*","string"]],
-    
+
     ["sqlite3_uri_boolean", "int", "sqlite3_filename", "string", "int"],
     ["sqlite3_uri_key", "string", "sqlite3_filename", "int"],
     ["sqlite3_uri_parameter", "string", "sqlite3_filename", "string"],
@@ -8094,7 +8094,7 @@ globalThis.sqlite3ApiBootstrap.initializers.push(function(sqlite3){
   ];
 
   if(false && wasm.compileOptionUsed('SQLITE_ENABLE_NORMALIZE')){
-    
+
     wasm.bindingSignatures.push(["sqlite3_normalized_sql", "string", "sqlite3_stmt*"]);
   }
 
@@ -8107,7 +8107,7 @@ globalThis.sqlite3ApiBootstrap.initializers.push(function(sqlite3){
       ["sqlite3_activate_see", undefined, "string"]
     );
   }
-  
+
   wasm.bindingSignatures.int64 = [
     ["sqlite3_bind_int64","int", ["sqlite3_stmt*", "int", "i64"]],
     ["sqlite3_changes64","i64", ["sqlite3*"]],
@@ -8172,16 +8172,16 @@ globalThis.sqlite3ApiBootstrap.initializers.push(function(sqlite3){
     ["sqlite3_vtab_in","int", "sqlite3_index_info*", "int", "int"],
     ["sqlite3_vtab_in_first", "int", "sqlite3_value*", "**"],
     ["sqlite3_vtab_in_next", "int", "sqlite3_value*", "**"],
-    
+
     ["sqlite3_vtab_nochange","int", "sqlite3_context*"],
     ["sqlite3_vtab_on_conflict","int", "sqlite3*"],
     ["sqlite3_vtab_rhs_value","int", "sqlite3_index_info*", "int", "**"]
   ];
 
-  
+
   if(wasm.bigIntEnabled && !!wasm.exports.sqlite3changegroup_add){
-    
-    
+
+
     const __ipsProxy = {
       signature: 'i(ps)',
       callProxy:(callback)=>{
@@ -8324,7 +8324,7 @@ globalThis.sqlite3ApiBootstrap.initializers.push(function(sqlite3){
       ]],
       ['sqlite3session_config', 'int', ['int', 'void*']],
       ['sqlite3session_create', 'int', ['sqlite3*', 'string', '**']],
-      
+
       ['sqlite3session_diff', 'int', ['sqlite3_session*', 'string', 'string', '**']],
       ['sqlite3session_enable', 'int', ['sqlite3_session*', 'int']],
       ['sqlite3session_indirect', 'int', ['sqlite3_session*', 'int']],
@@ -8350,7 +8350,7 @@ globalThis.sqlite3ApiBootstrap.initializers.push(function(sqlite3){
     ]);
   }
 
-  
+
   wasm.bindingSignatures.wasm = [
     ["sqlite3_wasm_db_reset", "int", "sqlite3*"],
     ["sqlite3_wasm_db_vfs", "sqlite3_vfs*", "sqlite3*","string"],
@@ -8360,7 +8360,7 @@ globalThis.sqlite3ApiBootstrap.initializers.push(function(sqlite3){
     ["sqlite3_wasm_vfs_unlink", "int", "sqlite3_vfs*","string"]
   ];
 
-  
+
   sqlite3.StructBinder = globalThis.Jaccwabyt({
     heap: 0 ? wasm.memory : wasm.heap8u,
     alloc: wasm.alloc,
@@ -8372,13 +8372,13 @@ globalThis.sqlite3ApiBootstrap.initializers.push(function(sqlite3){
 
   {
 
-    
+
     const __xString = wasm.xWrap.argAdapter('string');
     wasm.xWrap.argAdapter(
       'string:flexible', (v)=>__xString(util.flexibleString(v))
     );
 
-    
+
     wasm.xWrap.argAdapter(
       'string:static',
       function(v){
@@ -8389,7 +8389,7 @@ globalThis.sqlite3ApiBootstrap.initializers.push(function(sqlite3){
       }.bind(Object.create(null))
     );
 
-    
+
     const __xArgPtr = wasm.xWrap.argAdapter('*');
     const nilType = function(){};
     wasm.xWrap.argAdapter('sqlite3_filename', __xArgPtr)
@@ -8398,7 +8398,7 @@ globalThis.sqlite3ApiBootstrap.initializers.push(function(sqlite3){
     ('void*', __xArgPtr)
     ('sqlite3_changegroup*', __xArgPtr)
     ('sqlite3_changeset_iter*', __xArgPtr)
-    
+
     ('sqlite3_session*', __xArgPtr)
     ('sqlite3_stmt*', (v)=>
       __xArgPtr((v instanceof (sqlite3?.oo1?.Stmt || nilType))
@@ -8412,10 +8412,10 @@ globalThis.sqlite3ApiBootstrap.initializers.push(function(sqlite3){
     ('sqlite3_module*', (v)=>
       __xArgPtr((v instanceof (capi.sqlite3_module || nilType))
            ? v.pointer : v))
-    
+
     ('sqlite3_vfs*', (v)=>{
       if('string'===typeof v){
-        
+
         return capi.sqlite3_vfs_find(v)
           || sqlite3.SQLite3Error.toss(
             capi.SQLITE_NOTFOUND,
@@ -8434,9 +8434,9 @@ globalThis.sqlite3ApiBootstrap.initializers.push(function(sqlite3){
     ('sqlite3_vfs*', __xRcPtr)
     ('void*', __xRcPtr);
 
-    
+
     if(0 === wasm.exports.sqlite3_step.length){
-      
+
       wasm.xWrap.doArgcCheck = false;
       sqlite3.config.warn(
         "Disabling sqlite3.wasm.xWrap.doArgcCheck due to environmental quirks."
@@ -8449,7 +8449,7 @@ globalThis.sqlite3ApiBootstrap.initializers.push(function(sqlite3){
       wasm[e[0]] = wasm.xWrap.apply(null, e);
     }
 
-    
+
     const fI64Disabled = function(fname){
       return ()=>toss(fname+"() is unavailable due to lack",
                       "of BigInt support in this build.");
@@ -8460,14 +8460,14 @@ globalThis.sqlite3ApiBootstrap.initializers.push(function(sqlite3){
         : fI64Disabled(e[0]);
     }
 
-    
+
     delete wasm.bindingSignatures;
 
     if(wasm.exports.sqlite3_wasm_db_error){
       const __db_err = wasm.xWrap(
         'sqlite3_wasm_db_error', 'int', 'sqlite3*', 'int', 'string'
       );
-      
+
       util.sqlite3_wasm_db_error = function(pDb, resultCode, message){
         if(resultCode instanceof sqlite3.WasmAllocError){
           resultCode = capi.SQLITE_NOMEM;
@@ -8492,9 +8492,9 @@ globalThis.sqlite3ApiBootstrap.initializers.push(function(sqlite3){
       toss("Maintenance required: increase sqlite3_wasm_enum_json()'s",
            "static buffer size!");
     }
-    
+
     wasm.ctype = JSON.parse(wasm.cstrToJs(cJson));
-    
+
     const defineGroups = ['access', 'authorizer',
                           'blobFinalizers', 'changeset',
                           'config', 'dataTypes',
@@ -8511,8 +8511,8 @@ globalThis.sqlite3ApiBootstrap.initializers.push(function(sqlite3){
     }
     for(const t of defineGroups){
       for(const e of Object.entries(wasm.ctype[t])){
-        
-        
+
+
         capi[e[0]] = e[1];
       }
     }
@@ -8526,15 +8526,15 @@ globalThis.sqlite3ApiBootstrap.initializers.push(function(sqlite3){
         __rcMap[e[1]] = e[0];
       }
     }
-    
+
     capi.sqlite3_js_rc_str = (rc)=>__rcMap[rc];
-    
+
     const notThese = Object.assign(Object.create(null),{
-      
+
       WasmTestStruct: true,
-      
+
       sqlite3_kvvfs_methods: !util.isUIThread(),
-      
+
       sqlite3_index_info: !wasm.bigIntEnabled,
       sqlite3_index_constraint: !wasm.bigIntEnabled,
       sqlite3_index_orderby: !wasm.bigIntEnabled,
@@ -8546,7 +8546,7 @@ globalThis.sqlite3ApiBootstrap.initializers.push(function(sqlite3){
       }
     }
     if(capi.sqlite3_index_info){
-      
+
       for(const k of ['sqlite3_index_constraint',
                       'sqlite3_index_orderby',
                       'sqlite3_index_constraint_usage']){
@@ -8560,21 +8560,21 @@ globalThis.sqlite3ApiBootstrap.initializers.push(function(sqlite3){
     }
   }
 
-  
+
   const __dbArgcMismatch = (pDb,f,n)=>{
     return sqlite3.util.sqlite3_wasm_db_error(pDb, capi.SQLITE_MISUSE,
                                               f+"() requires "+n+" argument"+
                                               (1===n?"":'s')+".");
   };
 
-  
+
   const __errEncoding = (pDb)=>{
     return util.sqlite3_wasm_db_error(
       pDb, capi.SQLITE_FORMAT, "SQLITE_UTF8 is the only supported encoding."
     );
   };
 
-  
+
   const __argPDb = (pDb)=>wasm.xWrap.argAdapter('sqlite3*')(pDb);
   const __argStr = (str)=>wasm.isPtr(str) ? wasm.cstrToJs(str) : str;
   const __dbCleanupMap = function(
@@ -8600,7 +8600,7 @@ globalThis.sqlite3ApiBootstrap.initializers.push(function(sqlite3){
   };
 
   __dbCleanupMap._addUDF = function(pDb, name, arity, map){
-    
+
     name = __argStr(name).toLowerCase();
     let u = map.get(name);
     if(!u) map.set(name, (u = new Set));
@@ -8619,11 +8619,11 @@ globalThis.sqlite3ApiBootstrap.initializers.push(function(sqlite3){
     this._addUDF(pDb, name, arity, m.wudf);
   };
 
-  
+
   __dbCleanupMap.cleanup = function(pDb){
     pDb = __argPDb(pDb);
-    
-    
+
+
     const closeArgs = [pDb];
     for(const name of [
       'sqlite3_busy_handler',
@@ -8652,13 +8652,13 @@ globalThis.sqlite3ApiBootstrap.initializers.push(function(sqlite3){
             pDb, name, capi.SQLITE_UTF8, 0, 0, 0
           );
         }catch(e){
-          
+
         }
       }
       delete m.collation;
     }
     let i;
-    for(i = 0; i < 2; ++i){ 
+    for(i = 0; i < 2; ++i){
       const fmap = i ? m.wudf : m.udf;
       if(!fmap) continue;
       const func = i
@@ -8698,10 +8698,10 @@ globalThis.sqlite3ApiBootstrap.initializers.push(function(sqlite3){
     capi.sqlite3session_delete = function(pSession){
       if(1!==arguments.length){
         return __dbArgcMismatch(pDb, 'sqlite3session_delete', 1);
-        
+
       }
       else if(pSession){
-        
+
         capi.sqlite3session_table_filter(pSession, 0, 0);
       }
       __sqlite3SessionDelete(pSession);
@@ -8709,7 +8709,7 @@ globalThis.sqlite3ApiBootstrap.initializers.push(function(sqlite3){
   }
 
   {
-    
+
     const contextKey = (argv,argIndex)=>{
       return 'argv['+argIndex+']:'+argv[0]+
         ':'+wasm.cstrToJs(argv[1]).toLowerCase()
@@ -8718,17 +8718,17 @@ globalThis.sqlite3ApiBootstrap.initializers.push(function(sqlite3){
       'sqlite3_create_collation_v2', 'int', [
         'sqlite3*', 'string', 'int', '*',
         new wasm.xWrap.FuncPtrAdapter({
-          
+
           name: 'xCompare', signature: 'i(pipip)', contextKey
         }),
         new wasm.xWrap.FuncPtrAdapter({
-          
+
           name: 'xDestroy', signature: 'v(p)', contextKey
         })
       ]
     );
 
-    
+
     capi.sqlite3_create_collation_v2 = function(pDb,zName,eTextRep,pArg,xCompare,xDestroy){
       if(6!==arguments.length) return __dbArgcMismatch(pDb, 'sqlite3_create_collation_v2', 6);
       else if( 0 === (eTextRep & 0xf) ){
@@ -8756,7 +8756,7 @@ globalThis.sqlite3ApiBootstrap.initializers.push(function(sqlite3){
   }
 
   {
-    
+
     const contextKey = function(argv,argIndex){
       return (
         argv[0]
@@ -8766,7 +8766,7 @@ globalThis.sqlite3ApiBootstrap.initializers.push(function(sqlite3){
       )
     };
 
-    
+
     const __cfProxy = Object.assign(Object.create(null), {
       xInverseAndStep: {
         signature:'v(pip)', contextKey,
@@ -8796,7 +8796,7 @@ globalThis.sqlite3ApiBootstrap.initializers.push(function(sqlite3){
                 callback(pCtx, ...capi.sqlite3_values_to_js(argc, pArgv))
               );
             }catch(e){
-              
+
               capi.sqlite3_result_error_js(pCtx, e);
             }
           };
@@ -8804,7 +8804,7 @@ globalThis.sqlite3ApiBootstrap.initializers.push(function(sqlite3){
       },
       xDestroy: {
         signature:'v(p)', contextKey,
-        
+
         callProxy: (callback)=>{
           return (pVoid)=>{
             try{ callback(pVoid) }
@@ -8837,13 +8837,13 @@ globalThis.sqlite3ApiBootstrap.initializers.push(function(sqlite3){
       ]
     );
 
-    
+
     capi.sqlite3_create_function_v2 = function f(
       pDb, funcName, nArg, eTextRep, pApp,
-      xFunc,   
-      xStep,   
-      xFinal,  
-      xDestroy 
+      xFunc,
+      xStep,
+      xFinal,
+      xDestroy
     ){
       if( f.length!==arguments.length ){
         return __dbArgcMismatch(pDb,"sqlite3_create_function_v2",f.length);
@@ -8868,7 +8868,7 @@ globalThis.sqlite3ApiBootstrap.initializers.push(function(sqlite3){
       }
     };
 
-    
+
     capi.sqlite3_create_function = function f(
       pDb, funcName, nArg, eTextRep, pApp,
       xFunc, xStep, xFinal
@@ -8879,14 +8879,14 @@ globalThis.sqlite3ApiBootstrap.initializers.push(function(sqlite3){
         : __dbArgcMismatch(pDb,"sqlite3_create_function",f.length);
     };
 
-    
+
     capi.sqlite3_create_window_function = function f(
       pDb, funcName, nArg, eTextRep, pApp,
-      xStep,   
-      xFinal,  
-      xValue,  
+      xStep,
+      xFinal,
+      xValue,
       xInverse,
-      xDestroy 
+      xDestroy
     ){
       if( f.length!==arguments.length ){
         return __dbArgcMismatch(pDb,"sqlite3_create_window_function",f.length);
@@ -8912,17 +8912,17 @@ globalThis.sqlite3ApiBootstrap.initializers.push(function(sqlite3){
         return util.sqlite3_wasm_db_error(pDb, e, "Creation of UDF threw: "+e);
       }
     };
-    
+
     capi.sqlite3_create_function_v2.udfSetResult =
       capi.sqlite3_create_function.udfSetResult =
       capi.sqlite3_create_window_function.udfSetResult = capi.sqlite3_result_js;
 
-    
+
     capi.sqlite3_create_function_v2.udfConvertArgs =
       capi.sqlite3_create_function.udfConvertArgs =
       capi.sqlite3_create_window_function.udfConvertArgs = capi.sqlite3_values_to_js;
 
-    
+
     capi.sqlite3_create_function_v2.udfSetError =
       capi.sqlite3_create_function.udfSetError =
       capi.sqlite3_create_window_function.udfSetError = capi.sqlite3_result_error_js;
@@ -8931,7 +8931,7 @@ globalThis.sqlite3ApiBootstrap.initializers.push(function(sqlite3){
 
   {
 
-    
+
     const __flexiString = (v,n)=>{
       if('string'===typeof v){
         n = -1;
@@ -8947,21 +8947,21 @@ globalThis.sqlite3ApiBootstrap.initializers.push(function(sqlite3){
       return [v, n];
     };
 
-    
+
     const __prepare = {
-      
+
       basic: wasm.xWrap('sqlite3_prepare_v3',
                         "int", ["sqlite3*", "string",
                                 "int",
                                 "int", "**",
                                 "**"]),
-      
+
       full: wasm.xWrap('sqlite3_prepare_v3',
                        "int", ["sqlite3*", "*", "int", "int",
                                "**", "**"])
     };
 
-    
+
     capi.sqlite3_prepare_v3 = function f(pDb, sql, sqlLen, prepFlags, ppStmt, pzTail){
       if(f.length!==arguments.length){
         return __dbArgcMismatch(pDb,"sqlite3_prepare_v3",f.length);
@@ -8978,7 +8978,7 @@ globalThis.sqlite3ApiBootstrap.initializers.push(function(sqlite3){
       }
     };
 
-    
+
     capi.sqlite3_prepare_v2 = function f(pDb, sql, sqlLen, ppStmt, pzTail){
       return (f.length===arguments.length)
         ? capi.sqlite3_prepare_v3(pDb, sql, sqlLen, 0, ppStmt, pzTail)
@@ -8995,7 +8995,7 @@ globalThis.sqlite3ApiBootstrap.initializers.push(function(sqlite3){
       "sqlite3_stmt*", "int", "*", "int", "*"
     ]);
 
-    
+
     capi.sqlite3_bind_text = function f(pStmt, iCol, text, nText, xDestroy){
       if(f.length!==arguments.length){
         return __dbArgcMismatch(capi.sqlite3_db_handle(pStmt),
@@ -9029,7 +9029,7 @@ globalThis.sqlite3ApiBootstrap.initializers.push(function(sqlite3){
       }
     };
 
-    
+
     capi.sqlite3_bind_blob = function f(pStmt, iCol, pMem, nMem, xDestroy){
       if(f.length!==arguments.length){
         return __dbArgcMismatch(capi.sqlite3_db_handle(pStmt),
@@ -9066,40 +9066,40 @@ globalThis.sqlite3ApiBootstrap.initializers.push(function(sqlite3){
   }
 
   {
-    
+
     capi.sqlite3_config = function(op, ...args){
       if(arguments.length<2) return capi.SQLITE_MISUSE;
       switch(op){
-          case capi.SQLITE_CONFIG_COVERING_INDEX_SCAN: 
+          case capi.SQLITE_CONFIG_COVERING_INDEX_SCAN:
           case capi.SQLITE_CONFIG_MEMSTATUS:
-          case capi.SQLITE_CONFIG_SMALL_MALLOC: 
-          case capi.SQLITE_CONFIG_SORTERREF_SIZE: 
-          case capi.SQLITE_CONFIG_STMTJRNL_SPILL: 
+          case capi.SQLITE_CONFIG_SMALL_MALLOC:
+          case capi.SQLITE_CONFIG_SORTERREF_SIZE:
+          case capi.SQLITE_CONFIG_STMTJRNL_SPILL:
           case capi.SQLITE_CONFIG_URI:
             return wasm.exports.sqlite3_wasm_config_i(op, args[0]);
-          case capi.SQLITE_CONFIG_LOOKASIDE: 
+          case capi.SQLITE_CONFIG_LOOKASIDE:
             return wasm.exports.sqlite3_wasm_config_ii(op, args[0], args[1]);
-          case capi.SQLITE_CONFIG_MEMDB_MAXSIZE: 
+          case capi.SQLITE_CONFIG_MEMDB_MAXSIZE:
             return wasm.exports.sqlite3_wasm_config_j(op, args[0]);
-          case capi.SQLITE_CONFIG_GETMALLOC: 
-          case capi.SQLITE_CONFIG_GETMUTEX: 
-          case capi.SQLITE_CONFIG_GETPCACHE2: 
-          case capi.SQLITE_CONFIG_GETPCACHE: 
-          case capi.SQLITE_CONFIG_HEAP: 
-          case capi.SQLITE_CONFIG_LOG: 
+          case capi.SQLITE_CONFIG_GETMALLOC:
+          case capi.SQLITE_CONFIG_GETMUTEX:
+          case capi.SQLITE_CONFIG_GETPCACHE2:
+          case capi.SQLITE_CONFIG_GETPCACHE:
+          case capi.SQLITE_CONFIG_HEAP:
+          case capi.SQLITE_CONFIG_LOG:
           case capi.SQLITE_CONFIG_MALLOC:
-          case capi.SQLITE_CONFIG_MMAP_SIZE: 
-          case capi.SQLITE_CONFIG_MULTITHREAD: 
-          case capi.SQLITE_CONFIG_MUTEX: 
-          case capi.SQLITE_CONFIG_PAGECACHE: 
-          case capi.SQLITE_CONFIG_PCACHE2: 
-          case capi.SQLITE_CONFIG_PCACHE: 
-          case capi.SQLITE_CONFIG_PCACHE_HDRSZ: 
-          case capi.SQLITE_CONFIG_PMASZ: 
-          case capi.SQLITE_CONFIG_SERIALIZED: 
-          case capi.SQLITE_CONFIG_SINGLETHREAD: 
-          case capi.SQLITE_CONFIG_SQLLOG: 
-          case capi.SQLITE_CONFIG_WIN32_HEAPSIZE: 
+          case capi.SQLITE_CONFIG_MMAP_SIZE:
+          case capi.SQLITE_CONFIG_MULTITHREAD:
+          case capi.SQLITE_CONFIG_MUTEX:
+          case capi.SQLITE_CONFIG_PAGECACHE:
+          case capi.SQLITE_CONFIG_PCACHE2:
+          case capi.SQLITE_CONFIG_PCACHE:
+          case capi.SQLITE_CONFIG_PCACHE_HDRSZ:
+          case capi.SQLITE_CONFIG_PMASZ:
+          case capi.SQLITE_CONFIG_SERIALIZED:
+          case capi.SQLITE_CONFIG_SINGLETHREAD:
+          case capi.SQLITE_CONFIG_SQLLOG:
+          case capi.SQLITE_CONFIG_WIN32_HEAPSIZE:
           default:
             return capi.SQLITE_NOTFOUND;
       }
@@ -9127,7 +9127,7 @@ globalThis.sqlite3ApiBootstrap.initializers.push(function(sqlite3){
      ;
       if(!fPtr || 1!==arguments.length || !wasm.isPtr(fPtr)) return 0;
       return wasm.exports.sqlite3_cancel_auto_extension(fPtr);
-      
+
     };
 
     capi.sqlite3_reset_auto_extension = function(){
@@ -9152,7 +9152,7 @@ globalThis.sqlite3ApiBootstrap.initializers.push(function(sqlite3){
             ((115===wasm.peek(zClass))
              ? sessionStorage : localStorage);
 
-      
+
       const kvvfsImpls = {
         xRead: (zClass, zKey, zBuf, nBuf)=>{
           const stack = pstack.pointer,
@@ -9220,7 +9220,7 @@ globalThis.sqlite3ApiBootstrap.initializers.push(function(sqlite3){
           );
       }
     }else{
-      
+
       capi.sqlite3_vfs_unregister(pKvvfs);
     }
   }
@@ -9240,20 +9240,20 @@ globalThis.sqlite3ApiBootstrap.initializers.push(function(sqlite3){
   const toss3 = (...args)=>{throw new sqlite3.SQLite3Error(...args)};
 
   const capi = sqlite3.capi, wasm = sqlite3.wasm, util = sqlite3.util;
-  
 
-  
+
+
   const __ptrMap = new WeakMap();
-  
+
   const __stmtMap = new WeakMap();
 
-  
+
   const getOwnOption = (opts, p, dflt)=>{
     const d = Object.getOwnPropertyDescriptor(opts,p);
     return d ? d.value : dflt;
   };
 
-  
+
   const checkSqlite3Rc = function(dbPtr, sqliteResultCode){
     if(sqliteResultCode){
       if(dbPtr instanceof DB) dbPtr = dbPtr.pointer;
@@ -9268,23 +9268,23 @@ globalThis.sqlite3ApiBootstrap.initializers.push(function(sqlite3){
     return arguments[0];
   };
 
-  
+
   const __dbTraceToConsole =
         wasm.installFunction('i(ippp)', function(t,c,p,x){
           if(capi.SQLITE_TRACE_STMT===t){
-            
+
             console.log("SQL TRACE #"+(++this.counter)+' via sqlite3@'+c+':',
                         wasm.cstrToJs(x));
           }
         }.bind({counter: 0}));
 
-  
+
   const __vfsPostOpenSql = Object.create(null);
 
-  
+
   const dbCtorHelper = function ctor(...args){
     if(!ctor._name2vfs){
-      
+
       ctor._name2vfs = Object.create(null);
       const isWorkerThread = ('function'===typeof importScripts)
             ? (n)=>toss3("The VFS for",n,"is only available in the main window thread.")
@@ -9338,7 +9338,7 @@ globalThis.sqlite3ApiBootstrap.initializers.push(function(sqlite3){
     __ptrMap.set(this, pDb);
     __stmtMap.set(this, Object.create(null));
     try{
-      
+
       const pVfs = capi.sqlite3_js_db_vfs(pDb);
       if(!pVfs) toss3("Internal error: cannot get VFS for new db handle.");
       const postInitSql = __vfsPostOpenSql[pVfs];
@@ -9355,12 +9355,12 @@ globalThis.sqlite3ApiBootstrap.initializers.push(function(sqlite3){
     }
   };
 
-  
+
   dbCtorHelper.setVfsPostOpenSql = function(pVfs, sql){
     __vfsPostOpenSql[pVfs] = sql;
   };
 
-  
+
   dbCtorHelper.normalizeArgs = function(filename=':memory:',flags = 'c',vfs = null){
     const arg = {};
     if(1===arguments.length && arguments[0] && 'object'===typeof arguments[0]){
@@ -9375,13 +9375,13 @@ globalThis.sqlite3ApiBootstrap.initializers.push(function(sqlite3){
     }
     return arg;
   };
-  
+
   const DB = function(...args){
     dbCtorHelper.apply(this, args);
   };
   DB.dbCtorHelper = dbCtorHelper;
 
-  
+
   const BindTypes = {
     null: 1,
     number: 2,
@@ -9394,7 +9394,7 @@ globalThis.sqlite3ApiBootstrap.initializers.push(function(sqlite3){
     BindTypes.bigint = BindTypes.number;
   }
 
-  
+
   const Stmt = function(){
     if(BindTypes!==arguments[2]){
       toss3(capi.SQLITE_MISUSE, "Do not call the Stmt constructor directly. Use DB.prepare().");
@@ -9404,13 +9404,13 @@ globalThis.sqlite3ApiBootstrap.initializers.push(function(sqlite3){
     this.parameterCount = capi.sqlite3_bind_parameter_count(this.pointer);
   };
 
-  
+
   const affirmDbOpen = function(db){
     if(!db.pointer) toss3("DB has been closed.");
     return db;
   };
 
-  
+
   const affirmColIndex = function(stmt,ndx){
     if((ndx !== (ndx|0)) || ndx<0 || ndx>=stmt.columnCount){
       toss3("Column index",ndx,"is out of range.");
@@ -9418,7 +9418,7 @@ globalThis.sqlite3ApiBootstrap.initializers.push(function(sqlite3){
     return stmt;
   };
 
-  
+
   const parseExecArgs = function(db, args){
     const out = Object.create(null);
     out.opt = Object.create(null);
@@ -9484,7 +9484,7 @@ globalThis.sqlite3ApiBootstrap.initializers.push(function(sqlite3){
             }else if('string'===typeof opt.rowMode
                      && opt.rowMode.length>1
                      && '$'===opt.rowMode[0]){
-              
+
               const $colName = opt.rowMode.substr(1);
               out.cbArg = (stmt)=>{
                 const rc = stmt.get(Object.create(null))[$colName];
@@ -9501,7 +9501,7 @@ globalThis.sqlite3ApiBootstrap.initializers.push(function(sqlite3){
     return out;
   };
 
-  
+
   const __selectFirstRow = (db, sql, bind, ...getArgs)=>{
     const stmt = db.prepare(sql);
     try {
@@ -9513,25 +9513,25 @@ globalThis.sqlite3ApiBootstrap.initializers.push(function(sqlite3){
     }
   };
 
-  
+
   const __selectAll =
         (db, sql, bind, rowMode)=>db.exec({
           sql, bind, rowMode, returnValue: 'resultRows'
         });
 
-  
+
   DB.checkRc = (db,resultCode)=>checkSqlite3Rc(db,resultCode);
 
   DB.prototype = {
-    
+
     isOpen: function(){
       return !!this.pointer;
     },
-    
+
     affirmOpen: function(){
       return affirmDbOpen(this);
     },
-    
+
     close: function(){
       if(this.pointer){
         if(this.onclose && (this.onclose.before instanceof Function)){
@@ -9555,7 +9555,7 @@ globalThis.sqlite3ApiBootstrap.initializers.push(function(sqlite3){
         delete this.filename;
       }
     },
-    
+
     changes: function(total=false,sixtyFour=false){
       const p = affirmDbOpen(this).pointer;
       if(total){
@@ -9568,15 +9568,15 @@ globalThis.sqlite3ApiBootstrap.initializers.push(function(sqlite3){
           : capi.sqlite3_changes(p);
       }
     },
-    
+
     dbFilename: function(dbName='main'){
       return capi.sqlite3_db_filename(affirmDbOpen(this).pointer, dbName);
     },
-    
+
     dbName: function(dbNumber=0){
       return capi.sqlite3_db_name(affirmDbOpen(this).pointer, dbNumber);
     },
-    
+
     dbVfsName: function(dbName=0){
       let rc;
       const pVfs = capi.sqlite3_js_db_vfs(
@@ -9589,7 +9589,7 @@ globalThis.sqlite3ApiBootstrap.initializers.push(function(sqlite3){
       }
       return rc;
     },
-    
+
     prepare: function(sql){
       affirmDbOpen(this);
       const stack = wasm.pstack.pointer;
@@ -9607,7 +9607,7 @@ globalThis.sqlite3ApiBootstrap.initializers.push(function(sqlite3){
       __stmtMap.get(this)[pStmt] = stmt;
       return stmt;
     },
-    
+
     exec: function(){
       affirmDbOpen(this);
       const arg = parseExecArgs(this, arguments);
@@ -9628,10 +9628,10 @@ globalThis.sqlite3ApiBootstrap.initializers.push(function(sqlite3){
       try{
         const isTA = util.isSQLableTypedArray(arg.sql)
         ;
-        
+
         let sqlByteLen = isTA ? arg.sql.byteLength : wasm.jstrlen(arg.sql);
         const ppStmt  = wasm.scopedAlloc(
-          
+
           (2 * wasm.ptrSizeof) + (sqlByteLen + 1)
         );
         const pzTail = ppStmt + wasm.ptrSizeof ;
@@ -9657,7 +9657,7 @@ globalThis.sqlite3ApiBootstrap.initializers.push(function(sqlite3){
             bind = null;
           }
           if(evalFirstResult && stmt.columnCount){
-            
+
             let gotColNames = Array.isArray(
               opt.columnNames
               ) ? 0 : 1;
@@ -9675,7 +9675,7 @@ globalThis.sqlite3ApiBootstrap.initializers.push(function(sqlite3){
               stmt._lockedByExec = false;
             }
             if(0===gotColNames){
-              
+
               stmt.getColumnNames(opt.columnNames);
             }
           }else{
@@ -9695,22 +9695,22 @@ globalThis.sqlite3ApiBootstrap.initializers.push(function(sqlite3){
       return arg.returnVal();
     },
 
-    
+
     createFunction: function f(name, xFunc, opt){
       const isFunc = (f)=>(f instanceof Function);
       switch(arguments.length){
-          case 1: 
+          case 1:
             opt = name;
             name = opt.name;
             xFunc = opt.xFunc || 0;
             break;
-          case 2: 
+          case 2:
             if(!isFunc(xFunc)){
               opt = xFunc;
               xFunc = opt.xFunc || 0;
             }
             break;
-          case 3: 
+          case 3:
             break;
           default: break;
       }
@@ -9786,12 +9786,12 @@ globalThis.sqlite3ApiBootstrap.initializers.push(function(sqlite3){
       DB.checkRc(this, rc);
       return this;
     },
-    
+
     selectValue: function(sql,bind,asType){
       return __selectFirstRow(this, sql, bind, 0, asType);
     },
 
-    
+
     selectValues: function(sql,bind,asType){
       const stmt = this.prepare(sql), rc = [];
       try {
@@ -9804,32 +9804,32 @@ globalThis.sqlite3ApiBootstrap.initializers.push(function(sqlite3){
       return rc;
     },
 
-    
+
     selectArray: function(sql,bind){
       return __selectFirstRow(this, sql, bind, []);
     },
 
-    
+
     selectObject: function(sql,bind){
       return __selectFirstRow(this, sql, bind, {});
     },
 
-    
+
     selectArrays: function(sql,bind){
       return __selectAll(this, sql, bind, 'array');
     },
 
-    
+
     selectObjects: function(sql,bind){
       return __selectAll(this, sql, bind, 'object');
     },
 
-    
+
     openStatementCount: function(){
       return this.pointer ? Object.keys(__stmtMap.get(this)).length : 0;
     },
 
-    
+
     transaction: function(callback){
       let opener = 'BEGIN';
       if(arguments.length>1){
@@ -9850,7 +9850,7 @@ globalThis.sqlite3ApiBootstrap.initializers.push(function(sqlite3){
       }
     },
 
-    
+
     savepoint: function(callback){
       affirmDbOpen(this).exec("SAVEPOINT oo1");
       try {
@@ -9863,20 +9863,20 @@ globalThis.sqlite3ApiBootstrap.initializers.push(function(sqlite3){
       }
     },
 
-    
+
     checkRc: function(resultCode){
       return checkSqlite3Rc(this, resultCode);
     }
   };
 
 
-  
+
   const affirmStmtOpen = function(stmt){
     if(!stmt.pointer) toss3("Stmt has been closed.");
     return stmt;
   };
 
-  
+
   const isSupportedBindType = function(v){
     let t = BindTypes[(null===v||undefined===v) ? 'null' : typeof v];
     switch(t){
@@ -9887,19 +9887,19 @@ globalThis.sqlite3ApiBootstrap.initializers.push(function(sqlite3){
           return t;
         case BindTypes.bigint:
           if(wasm.bigIntEnabled) return t;
-          
+
         default:
           return util.isBindableTypedArray(v) ? BindTypes.blob : undefined;
     }
   };
 
-  
+
   const affirmSupportedBindType = function(v){
-    
+
     return isSupportedBindType(v) || toss3("Unsupported bind() argument type:",typeof v);
   };
 
-  
+
   const affirmParamIndex = function(stmt,key){
     const n = ('number'===typeof key)
           ? key : capi.sqlite3_bind_parameter_index(stmt.pointer, key);
@@ -9910,7 +9910,7 @@ globalThis.sqlite3ApiBootstrap.initializers.push(function(sqlite3){
     return n;
   };
 
-  
+
   const affirmNotLockedByExec = function(stmt,currentOpName){
     if(stmt._lockedByExec){
       toss3("Operation is illegal when statement is locked:",currentOpName);
@@ -9918,7 +9918,7 @@ globalThis.sqlite3ApiBootstrap.initializers.push(function(sqlite3){
     return stmt;
   };
 
-  
+
   const bindOne = function f(stmt,ndx,bindType,val){
     affirmNotLockedByExec(affirmStmtOpen(stmt), 'bind()');
     if(!f._){
@@ -9957,7 +9957,7 @@ globalThis.sqlite3ApiBootstrap.initializers.push(function(sqlite3){
             }else{
               f._tooBigInt(val);
             }
-          }else{ 
+          }else{
             val = Number(val);
             if(wasm.bigIntEnabled && Number.isInteger(val)){
               m = capi.sqlite3_bind_int64;
@@ -9997,7 +9997,7 @@ globalThis.sqlite3ApiBootstrap.initializers.push(function(sqlite3){
   };
 
   Stmt.prototype = {
-    
+
     finalize: function(){
       if(this.pointer){
         affirmNotLockedByExec(this,'finalize()');
@@ -10011,14 +10011,14 @@ globalThis.sqlite3ApiBootstrap.initializers.push(function(sqlite3){
         return rc;
       }
     },
-    
+
     clearBindings: function(){
       affirmNotLockedByExec(affirmStmtOpen(this), 'clearBindings()')
       capi.sqlite3_clear_bindings(this.pointer);
       this._mayGet = false;
       return this;
     },
-    
+
     reset: function(alsoClearBinds){
       affirmNotLockedByExec(this,'reset()');
       if(alsoClearBinds) this.clearBindings();
@@ -10027,7 +10027,7 @@ globalThis.sqlite3ApiBootstrap.initializers.push(function(sqlite3){
       checkSqlite3Rc(this.db, rc);
       return this;
     },
-    
+
     bind: function(){
       affirmStmtOpen(this);
       let ndx, arg;
@@ -10037,18 +10037,18 @@ globalThis.sqlite3ApiBootstrap.initializers.push(function(sqlite3){
           default: toss3("Invalid bind() arguments.");
       }
       if(undefined===arg){
-        
+
         return this;
       }else if(!this.parameterCount){
         toss3("This statement has no bindable parameters.");
       }
       this._mayGet = false;
       if(null===arg){
-        
+
         return bindOne(this, ndx, BindTypes.null, arg);
       }
       else if(Array.isArray(arg)){
-        
+
         if(1!==arguments.length){
           toss3("When binding an array, an index argument is not permitted.");
         }
@@ -10059,7 +10059,7 @@ globalThis.sqlite3ApiBootstrap.initializers.push(function(sqlite3){
       }
       if('object'===typeof arg
               && !util.isBindableTypedArray(arg)){
-        
+
         if(1!==arguments.length){
           toss3("When binding an object, an index argument is not permitted.");
         }
@@ -10073,7 +10073,7 @@ globalThis.sqlite3ApiBootstrap.initializers.push(function(sqlite3){
       }
       toss3("Should not reach this point.");
     },
-    
+
     bindAsBlob: function(ndx,arg){
       affirmStmtOpen(this);
       if(1===arguments.length){
@@ -10087,7 +10087,7 @@ globalThis.sqlite3ApiBootstrap.initializers.push(function(sqlite3){
       }
       return bindOne(this, ndx, BindTypes.blob, arg);
     },
-    
+
     step: function(){
       affirmNotLockedByExec(this, 'step()');
       const rc = capi.sqlite3_step(affirmStmtOpen(this).pointer);
@@ -10102,12 +10102,12 @@ globalThis.sqlite3ApiBootstrap.initializers.push(function(sqlite3){
             DB.checkRc(this.db.pointer, rc);
       }
     },
-    
+
     stepReset: function(){
       this.step();
       return this.reset();
     },
-    
+
     stepFinalize: function(){
       try{
         const rc = this.step();
@@ -10118,7 +10118,7 @@ globalThis.sqlite3ApiBootstrap.initializers.push(function(sqlite3){
         catch(e){}
       }
     },
-    
+
     get: function(ndx,asType){
       if(!affirmStmtOpen(this)._mayGet){
         toss3("Stmt.step() has not (recently) returned true.");
@@ -10147,17 +10147,17 @@ globalThis.sqlite3ApiBootstrap.initializers.push(function(sqlite3){
             if(wasm.bigIntEnabled){
               const rc = capi.sqlite3_column_int64(this.pointer, ndx);
               if(rc>=Number.MIN_SAFE_INTEGER && rc<=Number.MAX_SAFE_INTEGER){
-                
+
                 return Number(rc).valueOf();
               }
               return rc;
             }else{
               const rc = capi.sqlite3_column_double(this.pointer, ndx);
               if(rc>Number.MAX_SAFE_INTEGER || rc<Number.MIN_SAFE_INTEGER){
-                
+
                 toss3("Integer is out of range for JS integer range: "+rc);
               }
-              
+
               return util.isInt32(rc) ? (rc | 0) : rc;
             }
           }
@@ -10169,11 +10169,11 @@ globalThis.sqlite3ApiBootstrap.initializers.push(function(sqlite3){
             const n = capi.sqlite3_column_bytes(this.pointer, ndx),
                   ptr = capi.sqlite3_column_blob(this.pointer, ndx),
                   rc = new Uint8Array(n);
-            
+
             if(n) rc.set(wasm.heap8u().slice(ptr, ptr+n), 0);
-            
+
             if(n && this.db._blobXfer instanceof Array){
-              
+
               this.db._blobXfer.push(rc.buffer);
             }
             return rc;
@@ -10183,30 +10183,30 @@ globalThis.sqlite3ApiBootstrap.initializers.push(function(sqlite3){
       }
       toss3("Not reached.");
     },
-    
+
     getInt: function(ndx){return this.get(ndx,capi.SQLITE_INTEGER)},
-    
+
     getFloat: function(ndx){return this.get(ndx,capi.SQLITE_FLOAT)},
-    
+
     getString: function(ndx){return this.get(ndx,capi.SQLITE_TEXT)},
-    
+
     getBlob: function(ndx){return this.get(ndx,capi.SQLITE_BLOB)},
-    
+
     getJSON: function(ndx){
       const s = this.get(ndx, capi.SQLITE_STRING);
       return null===s ? s : JSON.parse(s);
     },
-    
-    
-    
-    
-    
+
+
+
+
+
     getColumnName: function(ndx){
       return capi.sqlite3_column_name(
         affirmColIndex(affirmStmtOpen(this),ndx).pointer, ndx
       );
     },
-    
+
     getColumnNames: function(tgt=[]){
       affirmColIndex(affirmStmtOpen(this),0);
       const n = this.columnCount;
@@ -10215,7 +10215,7 @@ globalThis.sqlite3ApiBootstrap.initializers.push(function(sqlite3){
       }
       return tgt;
     },
-    
+
     getParamIndex: function(name){
       return (affirmStmtOpen(this).parameterCount
               ? capi.sqlite3_bind_parameter_index(this.pointer, name)
@@ -10232,21 +10232,21 @@ globalThis.sqlite3ApiBootstrap.initializers.push(function(sqlite3){
     Object.defineProperty(Stmt.prototype, 'pointer', prop);
     Object.defineProperty(DB.prototype, 'pointer', prop);
   }
-  
+
   Object.defineProperty(Stmt.prototype, 'columnCount', {
     enumerable: false,
     get: function(){return capi.sqlite3_column_count(this.pointer)},
     set: ()=>toss3("The columnCount property is read-only.")
   });
 
-  
+
   sqlite3.oo1 = {
     DB,
     Stmt
   };
 
   if(util.isUIThread()){
-    
+
     sqlite3.oo1.JsStorageDb = function(storageName='session'){
       if('session'!==storageName && 'local'!==storageName){
         toss3("JsStorageDb db name must be one of 'session' or 'local'.");
@@ -10259,15 +10259,15 @@ globalThis.sqlite3ApiBootstrap.initializers.push(function(sqlite3){
     };
     const jdb = sqlite3.oo1.JsStorageDb;
     jdb.prototype = Object.create(DB.prototype);
-    
+
     jdb.clearStorage = capi.sqlite3_js_kvvfs_clear;
-    
+
     jdb.prototype.clearStorage = function(){
       return jdb.clearStorage(affirmDbOpen(this).filename);
     };
-    
+
     jdb.storageSize = capi.sqlite3_js_kvvfs_size;
-    
+
     jdb.prototype.storageSize = function(){
       return jdb.storageSize(affirmDbOpen(this).filename);
     };
@@ -10291,25 +10291,25 @@ sqlite3.initWorker1API = function(){
   const sqlite3 = this.sqlite3 || toss("Missing this.sqlite3 object.");
   const DB = sqlite3.oo1.DB;
 
-  
+
   const getDbId = function(db){
     let id = wState.idMap.get(db);
     if(id) return id;
     id = 'db#'+(++wState.idSeq)+'@'+db.pointer;
-    
+
     wState.idMap.set(db, id);
     return id;
   };
 
-  
+
   const wState = {
-    
+
     dbList: [],
-    
+
     idSeq: 0,
-    
+
     idMap: new WeakMap,
-    
+
     xfer: [],
     open: function(opt){
       const db = new DB(opt);
@@ -10330,7 +10330,7 @@ sqlite3.initWorker1API = function(){
         }
       }
     },
-    
+
     post: function(msg,xferList){
       if(xferList && xferList.length){
         globalThis.postMessage( msg, Array.from(xferList) );
@@ -10339,21 +10339,21 @@ sqlite3.initWorker1API = function(){
         globalThis.postMessage(msg);
       }
     },
-    
+
     dbs: Object.create(null),
-    
+
     getDb: function(id,require=true){
       return this.dbs[id]
         || (require ? toss("Unknown (or closed) DB ID:",id) : undefined);
     }
   };
 
-  
+
   const affirmDbOpen = function(db = wState.dbList[0]){
     return (db && db.pointer) ? db : toss("DB is not opened.");
   };
 
-  
+
   const getMsgDb = function(msgData,affirmExists=true){
     const db = wState.getDb(msgData.dbId,false) || wState.dbList[0];
     return affirmExists ? affirmDbOpen(db) : db;
@@ -10372,11 +10372,11 @@ sqlite3.initWorker1API = function(){
     return ""===n || ':'===n[0];
   };
 
-  
+
   const wMsgHandler = {
     open: function(ev){
       const oargs = Object.create(null), args = (ev.args || Object.create(null));
-      if(args.simulateError){ 
+      if(args.simulateError){
         toss("Throwing because of simulateError flag.");
       }
       const rc = Object.create(null);
@@ -10390,7 +10390,7 @@ sqlite3.initWorker1API = function(){
         if(byteArray) pVfs = guessVfs(args.filename);
       }
       if(pVfs){
-        
+
         let pMem;
         try{
           pMem = sqlite3.wasm.allocFromTypedArray(byteArray);
@@ -10441,7 +10441,7 @@ sqlite3.initWorker1API = function(){
       }
       const db = getMsgDb(ev);
       if(rc.callback || Array.isArray(rc.resultRows)){
-        
+
         db._blobXfer = wState.xfer;
       }
       const theCallback = rc.callback;
@@ -10449,7 +10449,7 @@ sqlite3.initWorker1API = function(){
       const hadColNames = !!rc.columnNames;
       if('string' === typeof theCallback){
         if(!hadColNames) rc.columnNames = [];
-        
+
         rc.callback = function(row,stmt){
           wState.post({
             type: theCallback,
@@ -10469,12 +10469,12 @@ sqlite3.initWorker1API = function(){
         }
         if(rc.callback instanceof Function){
           rc.callback = theCallback;
-          
+
           wState.post({
             type: theCallback,
             columnNames: rc.columnNames,
             rowNumber: null ,
-            row: undefined 
+            row: undefined
           });
         }
       }finally{
@@ -10497,7 +10497,7 @@ sqlite3.initWorker1API = function(){
       return rc;
     },
 
-    
+
     export: function(ev){
       const db = getMsgDb(ev);
       const response = {
@@ -10550,8 +10550,8 @@ sqlite3.initWorker1API = function(){
       dbId = result.dbId
         || getDefaultDbId();
     }
-    
-    
+
+
     wState.post({
       type: evType,
       dbId: dbId,
@@ -10559,12 +10559,12 @@ sqlite3.initWorker1API = function(){
       workerReceivedTime: arrivalTime,
       workerRespondTime: performance.now(),
       departureTime: ev.departureTime,
-      
-      
-      
-      
-      
-      
+
+
+
+
+
+
       result: result
     }, wState.xfer);
   };
@@ -10587,7 +10587,7 @@ globalThis.sqlite3ApiBootstrap.initializers.push(function(sqlite3){
   sqlite3.vtab = vtab;
 
   const sii = capi.sqlite3_index_info;
-  
+
   sii.prototype.nthConstraint = function(n, asPtr=false){
     if(n<0 || n>=this.$nConstraint) return false;
     const ptr = this.$aConstraint + (
@@ -10596,7 +10596,7 @@ globalThis.sqlite3ApiBootstrap.initializers.push(function(sqlite3){
     return asPtr ? ptr : new sii.sqlite3_index_constraint(ptr);
   };
 
-  
+
   sii.prototype.nthConstraintUsage = function(n, asPtr=false){
     if(n<0 || n>=this.$nConstraint) return false;
     const ptr = this.$aConstraintUsage + (
@@ -10605,7 +10605,7 @@ globalThis.sqlite3ApiBootstrap.initializers.push(function(sqlite3){
     return asPtr ? ptr : new sii.sqlite3_index_constraint_usage(ptr);
   };
 
-  
+
   sii.prototype.nthOrderBy = function(n, asPtr=false){
     if(n<0 || n>=this.$nOrderBy) return false;
     const ptr = this.$aOrderBy + (
@@ -10614,7 +10614,7 @@ globalThis.sqlite3ApiBootstrap.initializers.push(function(sqlite3){
     return asPtr ? ptr : new sii.sqlite3_index_orderby(ptr);
   };
 
-  
+
   const installMethod = function callee(
     tgt, name, func, applyArgcCheck = callee.installMethodArgcCheck
   ){
@@ -10637,7 +10637,7 @@ globalThis.sqlite3ApiBootstrap.initializers.push(function(sqlite3){
           return func.apply(this, args);
         }
       };
-      
+
       callee.removeFuncList = function(){
         if(this.ondispose.__removeFuncList){
           this.ondispose.__removeFuncList.forEach(
@@ -10646,7 +10646,7 @@ globalThis.sqlite3ApiBootstrap.initializers.push(function(sqlite3){
                 try{wasm.uninstallFunction(v)}
                 catch(e){}
               }
-              
+
             }
           );
           delete this.ondispose.__removeFuncList;
@@ -10659,7 +10659,7 @@ globalThis.sqlite3ApiBootstrap.initializers.push(function(sqlite3){
     }
     const memKey = tgt.memberKey(name);
     const fProxy = (applyArgcCheck && !wasm.isPtr(func))
-    
+
           ? callee.argcProxy(tgt, memKey, func, sigN)
           : func;
     if(wasm.isPtr(fProxy)){
@@ -10681,7 +10681,7 @@ globalThis.sqlite3ApiBootstrap.initializers.push(function(sqlite3){
   };
   installMethod.installMethodArgcCheck = false;
 
-  
+
   const installMethods = function(
     structInstance, methods, applyArgcCheck = installMethod.installMethodArgcCheck
   ){
@@ -10700,7 +10700,7 @@ globalThis.sqlite3ApiBootstrap.initializers.push(function(sqlite3){
     return structInstance;
   };
 
-  
+
   StructBinder.StructType.prototype.installMethod = function callee(
     name, func, applyArgcCheck = installMethod.installMethodArgcCheck
   ){
@@ -10709,14 +10709,14 @@ globalThis.sqlite3ApiBootstrap.initializers.push(function(sqlite3){
       : installMethod(this, ...arguments);
   };
 
-  
+
   StructBinder.StructType.prototype.installMethods = function(
     methods, applyArgcCheck = installMethod.installMethodArgcCheck
   ){
     return installMethods(this, methods, applyArgcCheck);
   };
 
-  
+
   capi.sqlite3_vfs.prototype.registerVfs = function(asDefault=false){
     if(!(this instanceof sqlite3.capi.sqlite3_vfs)){
       toss("Expecting a sqlite3_vfs-type argument.");
@@ -10732,7 +10732,7 @@ globalThis.sqlite3ApiBootstrap.initializers.push(function(sqlite3){
     return this;
   };
 
-  
+
   vfs.installVfs = function(opt){
     let count = 0;
     const propList = ['io','vfs'];
@@ -10756,12 +10756,12 @@ globalThis.sqlite3ApiBootstrap.initializers.push(function(sqlite3){
     return this;
   };
 
-  
+
   const __xWrapFactory = function(methodName,StructType){
     return function(ptr,removeMapping=false){
       if(0===arguments.length) ptr = new StructType;
       if(ptr instanceof StructType){
-        
+
         this.set(ptr.pointer, ptr);
         return ptr;
       }else if(!wasm.isPtr(ptr)){
@@ -10773,24 +10773,24 @@ globalThis.sqlite3ApiBootstrap.initializers.push(function(sqlite3){
     }.bind(new Map);
   };
 
-  
+
   const StructPtrMapper = function(name, StructType){
     const __xWrap = __xWrapFactory(name,StructType);
-    
+
     return Object.assign(Object.create(null),{
-      
+
       StructType,
-      
+
       create: (ppOut)=>{
         const rc = __xWrap();
         wasm.pokePtr(ppOut, rc.pointer);
         return rc;
       },
-      
+
       get: (pCObj)=>__xWrap(pCObj),
-      
+
       unget: (pCObj)=>__xWrap(pCObj,true),
-      
+
       dispose: (pCObj)=>{
         const o = __xWrap(pCObj,true);
         if(o) o.dispose();
@@ -10798,19 +10798,19 @@ globalThis.sqlite3ApiBootstrap.initializers.push(function(sqlite3){
     });
   };
 
-  
+
   vtab.xVtab = StructPtrMapper('xVtab', capi.sqlite3_vtab);
 
-  
+
   vtab.xCursor = StructPtrMapper('xCursor', capi.sqlite3_vtab_cursor);
 
-  
+
   vtab.xIndexInfo = (pIdxInfo)=>new capi.sqlite3_index_info(pIdxInfo);
 
-  
-  
 
-  
+
+
+
   vtab.xError = function f(methodName, err, defaultRc){
     if(f.errorReporter instanceof Function){
       try{f.errorReporter("sqlite3_module::"+methodName+"(): "+err.message);}
@@ -10824,13 +10824,13 @@ globalThis.sqlite3ApiBootstrap.initializers.push(function(sqlite3){
   };
   vtab.xError.errorReporter = 1 ? console.error.bind(console) : false;
 
-  
-  
 
-  
+
+
+
   vtab.xRowid = (ppRowid64, value)=>wasm.poke(ppRowid64, value, 'i64');
 
-  
+
   vtab.setupModule = function(opt){
     let createdMod = false;
     const mod = (this instanceof capi.sqlite3_module)
@@ -10838,11 +10838,11 @@ globalThis.sqlite3ApiBootstrap.initializers.push(function(sqlite3){
     try{
       const methods = opt.methods || toss("Missing 'methods' object.");
       for(const e of Object.entries({
-        
-        
+
+
         xConnect: 'xCreate', xDisconnect: 'xDestroy'
       })){
-        
+
         const k = e[0], v = e[1];
         if(true === methods[k]) methods[k] = methods[v];
         else if(true === methods[v]) methods[v] = methods[k];
@@ -10891,8 +10891,8 @@ globalThis.sqlite3ApiBootstrap.initializers.push(function(sqlite3){
         }
         installMethods(mod, remethods, false);
       }else{
-        
-        
+
+
         installMethods(
           mod, methods, !!opt.applyArgcCheck
         );
@@ -10912,7 +10912,7 @@ globalThis.sqlite3ApiBootstrap.initializers.push(function(sqlite3){
     return mod;
   };
 
-  
+
   capi.sqlite3_module.prototype.setupModule = function(opt){
     return vtab.setupModule.call(this, opt);
   };
@@ -10927,20 +10927,20 @@ globalThis.sqlite3ApiBootstrap.initializers.push(function(sqlite3){
 
 
 'use strict';
-if('undefined' !== typeof Module){ 
-  
+if('undefined' !== typeof Module){
+
   const SABC = Object.assign(
     Object.create(null), {
       exports: ('undefined'===typeof wasmExports)
         ? Module['asm']
         : wasmExports  ,
-      memory: Module.wasmMemory 
+      memory: Module.wasmMemory
     },
     globalThis.sqlite3ApiConfig || {}
   );
 
-  
-  
+
+
   globalThis.sqlite3ApiConfig = SABC;
   let sqlite3;
   try{
@@ -10976,12 +10976,12 @@ if('undefined' !== typeof Module){
 
 const toExportForESM =
 (function(){
-  
+
   const originalInit = sqlite3InitModule;
   if(!originalInit){
     throw new Error("Expecting globalThis.sqlite3InitModule to be defined by the Emscripten build.");
   }
-  
+
   const initModuleState = globalThis.sqlite3InitModuleState = Object.assign(Object.create(null),{
     moduleScript: globalThis?.document?.currentScript,
     isWorker: ('undefined' !== typeof WorkerGlobalScope),
@@ -11004,12 +11004,12 @@ const toExportForESM =
   }
 
   globalThis.sqlite3InitModule = function ff(...args){
-    
+
     return originalInit(...args).then((EmscriptenModule)=>{
-      
+
       const s = EmscriptenModule.sqlite3;
       s.scriptInfo = initModuleState;
-      
+
       if(ff.__isUnderTest) s.__isUnderTest = true;
       const f = s.asyncPostInit;
       delete s.asyncPostInit;

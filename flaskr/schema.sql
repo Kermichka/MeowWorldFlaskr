@@ -20,6 +20,7 @@ CREATE TABLE products (
 CREATE TABLE carts (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   customer_id INTEGER NOT NULL,
+  created_at DATETIME NOT NULL,
   FOREIGN KEY (customer_id) REFERENCES users (id)
 );
 

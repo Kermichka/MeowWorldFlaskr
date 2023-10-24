@@ -24,7 +24,7 @@
 'use strict';
 
 globalThis.sqlite3Worker1Promiser = function callee(config = callee.defaultConfig){
-  
+
   if(1===arguments.length && 'function'===typeof arguments[0]){
     const f = config;
     config = Object.assign(Object.create(null), callee.defaultConfig);
@@ -51,7 +51,7 @@ globalThis.sqlite3Worker1Promiser = function callee(config = callee.defaultConfi
     let msgHandler = handlerMap[ev.messageId];
     if(!msgHandler){
       if(ev && 'sqlite3-api'===ev.type && 'worker1-ready'===ev.result) {
-        
+
         if(config.onready) config.onready();
         return;
       }
@@ -106,10 +106,10 @@ globalThis.sqlite3Worker1Promiser = function callee(config = callee.defaultConfi
         handlerMap[rowCallbackId] = proxy;
       }else if('string' === typeof msg.args.callback){
         toss("exec callback may not be a string when using the Promise interface.");
-        
+
       }
     }
-    
+
     let p = new Promise(function(resolve, reject){
       proxy.resolve = resolve;
       proxy.reject = reject;
@@ -128,9 +128,9 @@ globalThis.sqlite3Worker1Promiser.defaultConfig = {
       const src = this.currentScript.src.split('/');
       src.pop();
       theJs = src.join('/')+'/' + theJs;
-      
+
     }else if(globalThis.location){
-      
+
       const urlParams = new URL(globalThis.location.href).searchParams;
       if(urlParams.has('sqlite3.dir')){
         theJs = urlParams.get('sqlite3.dir') + '/' + theJs;
