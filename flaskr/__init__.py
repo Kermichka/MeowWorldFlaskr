@@ -10,7 +10,8 @@ def create_app(test_config=None):
         DATABASE=os.path.join(app.instance_path, "flaskr.sqlite"),
         SESSION_COOKIE_HTTPONLY=False,
     )
-
+    
+        
     if test_config is None:
         app.config.from_pyfile("config.py", silent=True)
     else:
@@ -33,5 +34,6 @@ def create_app(test_config=None):
 
     app.register_blueprint(shop.bp)
     app.add_url_rule("/", endpoint="index")
-
+    
     return app
+app = create_app()
